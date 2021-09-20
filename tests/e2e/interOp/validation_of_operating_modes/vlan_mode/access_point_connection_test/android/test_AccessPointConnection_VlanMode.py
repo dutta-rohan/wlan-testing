@@ -37,7 +37,7 @@ setup_params_general = {
     "radius": False
 }
 
-@allure.feature("BRIDGE MODE CLIENT CONNECTIVITY")
+@allure.feature("VLAN MODE CLIENT CONNECTIVITY")
 @pytest.mark.parametrize(
     'setup_profiles',
     [setup_params_general],
@@ -46,11 +46,11 @@ setup_params_general = {
 )
 
 @pytest.mark.usefixtures("setup_profiles")
-class TestAcessPointConnectionBridge(object):
+class TestAcessPointConnectionVlan(object):
 
     @pytest.mark.fiveg
     @pytest.mark.wpa2_personal
-    def test_AccessPointConnection_5g_WPA2_Personal_Bridge(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_5g_WPA2_Personal_Vlan(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
         profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][1]
         ssidName = profile_data["ssid_name"]
         ssidPassword = profile_data["security_key"]
@@ -79,7 +79,7 @@ class TestAcessPointConnectionBridge(object):
 
     @pytest.mark.twog
     @pytest.mark.wpa2_personal
-    def test_AccessPointConnection_2g_WPA2_Personal_Bridge(self,request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_2g_WPA2_Personal_Vlan(self,request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
         profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][0]
         ssidName = profile_data["ssid_name"]
         ssidPassword = profile_data["security_key"]
@@ -108,7 +108,7 @@ class TestAcessPointConnectionBridge(object):
 
     @pytest.mark.fiveg
     @pytest.mark.wpa
-    def test_AccessPointConnection_5g_WPA_Bridge(self, request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_5g_WPA_Vlan(self, request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
         profile_data = setup_params_general["ssid_modes"]["wpa"][1]
         ssidName = profile_data["ssid_name"]
         ssidPassword = profile_data["security_key"]
@@ -137,7 +137,7 @@ class TestAcessPointConnectionBridge(object):
 
     @pytest.mark.twog
     @pytest.mark.wpa
-    def test_AccessPointConnection_2g_WPA_Bridge(self, request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_2g_WPA_Vlan(self, request, get_vif_state, get_ToggleAirplaneMode_data, setup_perfectoMobile_android):
         profile_data = setup_params_general["ssid_modes"]["wpa"][0]
         ssidName = profile_data["ssid_name"]
         ssidPassword = profile_data["security_key"]
@@ -166,7 +166,7 @@ class TestAcessPointConnectionBridge(object):
 
     @pytest.mark.twog
     @pytest.mark.open
-    def test_AccessPointConnection_2g_OPEN_Bridge(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_2g_OPEN_Vlan(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
 
         profile_data = setup_params_general["ssid_modes"]["open"][0]
         ssidName = profile_data["ssid_name"]
@@ -195,7 +195,7 @@ class TestAcessPointConnectionBridge(object):
 
     @pytest.mark.fiveg
     @pytest.mark.open
-    def test_AccessPointConnection_5g_OPEN_Bridge(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
+    def test_AccessPointConnection_5g_OPEN_Vlan(self, request, get_vif_state, get_APToMobileDevice_data, setup_perfectoMobile_android):
 
         profile_data = setup_params_general["ssid_modes"]["open"][1]
         ssidName = profile_data["ssid_name"]
