@@ -140,6 +140,131 @@ class TestRateLimitingBridge(object):
         assert True
 
     @pytest.mark.wpa2_personal
+    @pytest.mark.twog
+    @pytest.mark.disable_up_dw
+    def test_wpa2_personal_ssid_disable_up_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and twog and disable_up_dw"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][0]
+        ssid_name = profile_data["ssid_name"]
+        profile_data["rate-limit"][0] = 0
+        profile_data["rate-limit"][1] = 0
+        mode = "BRIDGE"
+        vlan = 1
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="2G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000")
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.twog
+    @pytest.mark.up_dw_per_client
+    def test_wpa2_personal_ssid_up_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and twog and up_dw_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][0]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["dl_rate_sel: Per-Station Download Rate:"], ["ul_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="2G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.twog
+    @pytest.mark.up_per_client
+    def test_wpa2_personal_ssid_up_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and twog and up_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][0]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["ul_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="2G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="0Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.twog
+    @pytest.mark.dw_per_client
+    def test_wpa2_personal_ssid_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and twog and dw_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][0]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["dw_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="2G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="0Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @pytest.mark.up
     @pytest.mark.batch_size_125
@@ -420,6 +545,131 @@ class TestRateLimitingBridge(object):
         wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
                                         download_rate="1Gbps", batch_size="1",
                                         upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000")
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.fiveg
+    @pytest.mark.disable_up_dw
+    def test_wpa2_personal_ssid_disable_up_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and fiveg and disable_up_dw"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][1]
+        ssid_name = profile_data["ssid_name"]
+        profile_data["rate-limit"][0] = 0
+        profile_data["rate-limit"][1] = 0
+        mode = "BRIDGE"
+        vlan = 1
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="5G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000")
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.fiveg
+    @pytest.mark.up_dw_per_client
+    def test_wpa2_personal_ssid_up_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and fiveg and up_dw_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][1]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["dl_rate_sel: Per-Station Download Rate:"], ["ul_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="5G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.fiveg
+    @pytest.mark.up_per_client
+    def test_wpa2_personal_ssid_up_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and fiveg and up_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][1]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["ul_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="5G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="0Gbps", batch_size="1,2,5",
+                                        upload_rate="1Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
+
+        report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
+
+        lf_tools.attach_report_graphs(report_name=report_name)
+        print("Test Completed... Cleaning up Stations")
+        assert True
+
+    @pytest.mark.wpa2_personal
+    @pytest.mark.fiveg
+    @pytest.mark.dw_per_client
+    def test_wpa2_personal_ssid_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+        """
+            Test Rate Limiting Scenario
+            pytest -m "rate_limiting and bridge and wpa2_personal and fiveg and dw_per_client"
+        """
+        # run wifi capacity test here
+        profile_data = setup_params_general["ssid_modes"]["wpa2_personal"][1]
+        ssid_name = profile_data["ssid_name"]
+        mode = "BRIDGE"
+        vlan = 1
+        raw_lines = [["dw_rate_sel: Per-Station Download Rate:"]]
+        allure.attach(name="ssid-rates", body=str(profile_data["rate-limit"]))
+        get_vif_state.append(ssid_name)
+        if ssid_name not in get_vif_state:
+            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+            pytest.xfail("SSID NOT AVAILABLE IN VIF STATE")
+        lf_tools.add_stations(band="5G", num_stations=5, dut=lf_tools.dut_name, ssid_name=ssid_name)
+        lf_tools.Chamber_View()
+        wct_obj = lf_test.wifi_capacity(instance_name="test_client_wpa2_BRIDGE_tcp_dl", mode=mode, vlan_id=vlan,
+                                        download_rate="1Gbps", batch_size="1,2,5",
+                                        upload_rate="0Gbps", protocol="UDP-IPv4", duration="60000", raw_lines=raw_lines)
 
         report_name = wct_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
 
