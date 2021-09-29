@@ -39,7 +39,7 @@ from lf_rx_sensitivity_test import RxSensitivityTest
 from lf_ap_auto_test import ApAutoTest
 from csv_to_influx import CSVtoInflux
 from influx2 import RecordInflux
-#from lf_multipsk import MultiPsk
+from lf_multipsk import MultiPsk
 
 
 class RunTest:
