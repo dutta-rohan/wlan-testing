@@ -228,6 +228,7 @@ class RunTest:
             upstream_port = self.upstream_port + "." + str(vlan_id)
         '''SINGLE WIFI CAPACITY using lf_wifi_capacity.py'''
         wificapacity_obj = WiFiCapacityTest(lfclient_host=self.lanforge_ip,
+                                            ssh_port=self.lf_ssh_port,
                                             lf_port=self.lanforge_port,
                                             lf_user="lanforge",
                                             lf_password="lanforge",

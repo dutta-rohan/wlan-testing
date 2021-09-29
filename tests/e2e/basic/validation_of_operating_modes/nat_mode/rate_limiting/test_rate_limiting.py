@@ -48,7 +48,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up and batch_size_125"
@@ -80,7 +80,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.dw
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and dw and batch_size_125"
@@ -112,7 +112,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up_dw
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up_dw and batch_size_125"
@@ -142,7 +142,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @pytest.mark.disable_up_dw
-    def test_wpa2_personal_ssid_disable_up_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_disable_up_dw_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and disable_up_dw"
@@ -174,7 +174,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @pytest.mark.up_dw_per_client
-    def test_wpa2_personal_ssid_up_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up_dw_per_client"
@@ -205,7 +205,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @pytest.mark.up_per_client
-    def test_wpa2_personal_ssid_up_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up_per_client"
@@ -236,7 +236,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @pytest.mark.dw_per_client
-    def test_wpa2_personal_ssid_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_per_client_batch_size_125_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and dw_per_client"
@@ -269,7 +269,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up and batch_size_125"
@@ -301,7 +301,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.dw
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and dw and batch_size_125"
@@ -333,7 +333,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up_dw
     @pytest.mark.batch_size_125
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up_dw and batch_size_125"
@@ -365,7 +365,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up and batch_size_1"
@@ -397,7 +397,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.dw
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_dw_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and dw and batch_size_1"
@@ -429,7 +429,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up_dw
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_dw_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_batch_size_1_2g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and twog and up_dw and batch_size_1"
@@ -461,7 +461,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up and batch_size_1"
@@ -493,7 +493,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.dw
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_dw_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and dw and batch_size_1"
@@ -525,7 +525,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.up_dw
     @pytest.mark.batch_size_1
     @allure.story('Rate Limiting Open SSID 2.4 GHZ Band')
-    def test_wpa2_personal_ssid_up_dw_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_batch_size_1_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up_dw and batch_size_1"
@@ -555,7 +555,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @pytest.mark.disable_up_dw
-    def test_wpa2_personal_ssid_disable_up_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_disable_up_dw_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and disable_up_dw"
@@ -587,7 +587,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @pytest.mark.up_dw_per_client
-    def test_wpa2_personal_ssid_up_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up_dw_per_client"
@@ -618,7 +618,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @pytest.mark.up_per_client
-    def test_wpa2_personal_ssid_up_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_up_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and up_per_client"
@@ -649,7 +649,7 @@ class TestRateLimitingNat(object):
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @pytest.mark.dw_per_client
-    def test_wpa2_personal_ssid_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
+    def test_wpa2_personal_nat_ssid_dw_per_client_batch_size_125_5g(self, lf_test, get_vif_state, lf_tools):
         """
             Test Rate Limiting Scenario
             pytest -m "rate_limiting and nat and wpa2_personal and fiveg and dw_per_client"
