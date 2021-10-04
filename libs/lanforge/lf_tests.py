@@ -428,30 +428,6 @@ class RunTest:
                         instance_name="test_demo", dut_5g="", dut_2g=""):
         instance_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=S))
 
-        if mode == "BRIDGE":
-            self.upstream_port = self.upstream_port
-        elif mode == "NAT":
-            self.upstream_port = self.upstream_port
-        else:
-            self.upstream_port = self.upstream_port + "." + str(vlan_id)
-
-        if len(self.twog_radios) == 1:
-            twog_radios = [[self.twog_radios[0]]]
-
-        elif len(self.twog_radios) > 1:
-            twog_radio = []
-            for i in range(0, len(self.twog_radios)):
-                twog_radio.append([self.twog_radios[i]])
-            twog_radios = twog_radio
-
-        if len(self.fiveg_radios) == 1:
-            fiveg_radios = [[self.fiveg_radios[0]]]
-
-        elif len(self.fiveg_radios) > 1:
-            fiveg_radio = []
-            for i in range(0, len(self.fiveg_radios)):
-                fiveg_radio.append([self.fiveg_radios[i]])
-            fiveg_radios = fiveg_radio
 
         self.apstab_obj = ApAutoTest(lf_host=self.lanforge_ip,
                                      lf_port=self.lanforge_port,
@@ -468,14 +444,14 @@ class RunTest:
                                      max_stations_2=5,
                                      max_stations_5=5,
                                      max_stations_dual=10,
-                                     radio2=twog_radios,
-                                     radio5=fiveg_radios,
+                                     radio2=[self.twog_radios],
+                                     radio5=[self.fiveg_radios],
                                      sets=[['Basic Client Connectivity', '0'], ['Multi Band Performance', '0'],
                                            ['Throughput vs Pkt Size', '0'], ['Capacity', '0'],
                                            ['Stability', '1'],
                                            ['Band-Steering', '0'], ['Multi-Station Throughput vs Pkt Size', '0'],
                                            ['Long-Term', '0']],
-                                     raw_lines=[['reset_dur:48h'],['reset_batch_size:2']]
+                                     raw_lines=[['reset_dur:300'],['reset_batch_size:2']]
                                      )
         self.apstab_obj.setup()
         self.apstab_obj.run()
