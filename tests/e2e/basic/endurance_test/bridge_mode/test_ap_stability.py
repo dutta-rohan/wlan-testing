@@ -10,8 +10,8 @@ import os
 import allure
 import pytest
 
-pytestmark = [pytest.mark.regression,pytest.mark.bridge, pytest.mark.usefixtures("setup_test_run")]
-
+#pytestmark = [pytest.mark.regression,pytest.mark.bridge, pytest.mark.usefixtures("setup_test_run")]
+pytestmark = [pytest.mark.regression,pytest.mark.bridge]
 setup_params_general = {
     "mode": "BRIDGE",
     "ssid_modes": {
@@ -37,7 +37,7 @@ class TestAPStabilityBridge(object):
     """
          pytest -m "regression and bridge and wpa2_personal and twog  and fiveg"
     """
-
+    @pytest.mark.stability
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @pytest.mark.fiveg
