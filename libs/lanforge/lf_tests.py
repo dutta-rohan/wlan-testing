@@ -425,7 +425,7 @@ class RunTest:
 
         influx.glob()
         return self.dualbandptest_obj
-      
+
     def apstabilitytest(self, ssid_5G="[BLANK]", ssid_2G="[BLANK]", mode="BRIDGE", vlan_id=100, dut_name="TIP",
                         instance_name="test_demo", dut_5g="", dut_2g=""):
         instance_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=S))
@@ -436,6 +436,23 @@ class RunTest:
             self.upstream_port = self.upstream_port
         else:
             self.upstream_port = self.upstream_port + "." + str(vlan_id)
+        if len(self.twog_radios) == 1:
+            twog_radios = [[self.twog_radios[0]]]
+
+        elif len(self.twog_radios) > 1:
+            twog_radio = []
+            for i in range(0, len(self.twog_radios)):
+                twog_radio.append([self.twog_radios[i]])
+            twog_radios = twog_radio
+
+        if len(self.fiveg_radios) == 1:
+            fiveg_radios = [[self.fiveg_radios[0]]]
+
+        elif len(self.fiveg_radios) > 1:
+            fiveg_radio = []
+            for i in range(0, len(self.fiveg_radios)):
+                fiveg_radio.append([self.fiveg_radios[i]])
+            fiveg_radios = fiveg_radio
 
         self.apstab_obj = ApAutoTest(lf_host=self.lanforge_ip,
                                      lf_port=self.lanforge_port,
@@ -449,32 +466,27 @@ class RunTest:
                                      dut2_0=dut_2g,
                                      load_old_cfg=False,
                                      local_lf_report_dir=self.local_report_path,
-                                     max_stations_2=5,
-                                     max_stations_5=5,
-                                     max_stations_dual=10,
-                                     radio2=[self.twog_radios],
-                                     radio5=[self.fiveg_radios],
+                                     max_stations_2=64,
+                                     max_stations_5=64,
+                                     max_stations_dual=125,
+                                     radio2=twog_radios,
+                                     radio5=fiveg_radios,
                                      sets=[['Basic Client Connectivity', '0'], ['Multi Band Performance', '0'],
                                            ['Throughput vs Pkt Size', '0'], ['Capacity', '0'],
                                            ['Stability', '1'],
                                            ['Band-Steering', '0'], ['Multi-Station Throughput vs Pkt Size', '0'],
                                            ['Long-Term', '0']],
-                                     raw_lines=[['reset_dur:300'],['reset_batch_size:2']]
+                                     raw_lines=[['reset_dur:48h'], ['reset_batch_size:0']]
                                      )
         self.apstab_obj.setup()
         self.apstab_obj.run()
         report_name = self.apstab_obj.report_name[0]['LAST']["response"].split(":::")[1].split("/")[-1]
-        influx = CSVtoInflux(influx_host=self.influx_params["influx_host"],
-                             influx_port=self.influx_params["influx_port"],
-                             influx_org=self.influx_params["influx_org"],
-                             influx_token=self.influx_params["influx_token"],
-                             influx_bucket=self.influx_params["influx_bucket"],
-                             path=report_name)
-
-        influx.glob()
+        influx = CSVtoInflux(influxdb=self.influxdb,
+                             _influx_tag=self.influx_params["influx_tag"],
+                             target_csv=self.local_report_path + report_name + "/kpi.csv")
+        influx.post_to_influx()
         return self.apstab_obj
 
-    
     def ratevsrange(self, station_name=None, mode="BRIDGE", vlan_id=100, download_rate="85%", dut_name="TIP",
                     upload_rate="0", duration="1m", instance_name="test_demo", raw_lines=None):
         if mode == "BRIDGE":
