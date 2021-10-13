@@ -150,7 +150,7 @@ class RunTest:
                     station_name=[], key_mgmt="WPA-EAP",
                     pairwise="NA", group="NA", wpa_psk="DEFAULT",
                     ttls_passwd="nolastart", ieee80211w=1,
-                    wep_key="NA", ca_cert="NA", eap="TTLS", identity="nolaradius"):
+                    wep_key="NA", ca_cert="NA", eap="TTLS", identity="nolaradius", private_key="NA", pk_passwd="NA"):
         self.eap_connect = TTLSTest(host=self.lanforge_ip, port=self.lanforge_port,
                                     sta_list=station_name, vap=False, _debug_on=self.debug)
 
@@ -181,10 +181,14 @@ class RunTest:
             self.eap_connect.pairwise = pairwise
             self.eap_connect.group = group
         if eap == "TLS":
-            self.eap_connect.key_mgmt = "WPA-EAP-SUITE-B"
+            self.eap_connect.ieee80211w = ieee80211w
+            self.eap_connect.key_mgmt = key_mgmt
+            self.eap_connect.identity = identity
+            self.eap_connect.ttls_passwd = ttls_passwd
             self.eap_connect.station_profile.set_command_flag("add_sta", "80211u_enable", 0)
-            self.eap_connect.pairwise = "TKIP"
-            self.eap_connect.group = "TKIP"
+            self.eap_connect.private_key = private_key
+            self.eap_connect.ca_cert = ca_cert
+            self.eap_connect.pk_passwd = pk_passwd
             self.eap_connect.eap = "EAP-TLS"
 
         # self.eap_connect.hs20_enable = False
