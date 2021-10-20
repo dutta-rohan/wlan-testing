@@ -431,6 +431,7 @@ class TestMultiStaThptnat(object):
         lf_tools.attach_report_graphs(report_name=report_name, pdf_name="Multi Station Throughput vs Packet Size Test")
         assert True
 
+
     @pytest.mark.wpa3_personal
     @pytest.mark.fiveg
     @allure.testcase(name="test_mstathpt_wpa3_personal_nat_tcp_dl_5g_10",
