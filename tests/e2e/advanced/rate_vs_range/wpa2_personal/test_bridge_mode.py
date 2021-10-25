@@ -15,7 +15,7 @@ import os.path
 import csv
 import pandas as pd
 
-pytestmark = [pytest.mark.ratevsrange, pytest.mark.bridge ,pytest.mark.usefixtures("setup_test_run")]
+pytestmark = [pytest.mark.ratevsrange, pytest.mark.bridge]
 
 
 setup_params_general = {
