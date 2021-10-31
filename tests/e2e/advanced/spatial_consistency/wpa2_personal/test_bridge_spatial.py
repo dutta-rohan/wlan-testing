@@ -74,7 +74,6 @@ class Test_SpatialConsistency_Bridge(object):
                 assert False
             else:
                 kpi_val = lf_tools.read_kpi_file(column_name=["numeric-score"], dir_name=report_name)
-
                 if str(kpi_val) == "empty":
                     print("kpi is empty, station did not got ip, Test failed")
                     allure.attach(name="Kpi Data", body="station did not got ip Test failed.")
