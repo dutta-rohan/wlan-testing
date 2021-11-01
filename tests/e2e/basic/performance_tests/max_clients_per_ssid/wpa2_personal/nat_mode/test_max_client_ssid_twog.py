@@ -31,8 +31,8 @@ class TestMaxClientPerssid(object):
 
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
-    # @allure.testcase(name="test_max_client_wpa2_nat_twog",
-    # url="https://telecominfraproject.atlassian.net/browse/WIFI-4974")
+    @allure.testcase(name="test_max_client_wpa2_nat_twog",
+    url="https://telecominfraproject.atlassian.net/browse/WIFI-4974")
     def test_max_client_wpa2_nat_twog(self, get_vif_state, lf_tools,
                         create_lanforge_chamberview_dut, lf_test, get_configuration):
         '''
