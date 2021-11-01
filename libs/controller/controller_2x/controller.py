@@ -470,7 +470,7 @@ class UProfileUtility:
             print("Invalid Mode")
             return 0
 
-    def add_ssid(self, ssid_data, radius=False, radius_auth_data={}, radius_accounting_data={}):
+    def add_ssid(self, ssid_data,ipv4={}, radius=False, radius_auth_data={}, radius_accounting_data={}):
         print("ssid data : ", ssid_data)
         ssid_info = {'name': ssid_data["ssid_name"], "bss-mode": "ap", "wifi-bands": [], "services": ["wifi-frames"]}
         for options in ssid_data:
@@ -502,6 +502,9 @@ class UProfileUtility:
             }
         if self.mode == "NAT":
             self.base_profile_config['interfaces'][1]['ssids'].append(ssid_info)
+            if ipv4 != {}:
+               self.base_profile_config['interfaces'][1]["ipv4"] = ipv4
+
         elif self.mode == "BRIDGE":
             self.base_profile_config['interfaces'][0]['ssids'].append(ssid_info)
         elif self.mode == "VLAN":
