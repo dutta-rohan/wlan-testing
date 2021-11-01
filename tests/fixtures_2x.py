@@ -333,6 +333,8 @@ class Fixtures_2x:
         parameter = dict(param)
         test_cases = {}
         profile_data = {}
+        if "ipv4" in dict.keys():
+            ipv4_data = parameter["ipv4"]
 
         if parameter['mode'] not in ["BRIDGE", "NAT", "VLAN"]:
             print("Invalid Mode: ", parameter['mode'])
@@ -400,7 +402,7 @@ class Fixtures_2x:
                                 lf_dut_data.append(j)
                             j["appliedRadios"] = list(set(j["appliedRadios"]))
                             j['security'] = 'psk2'
-                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)
+                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j,ipv4=ipv4_data)
                             test_cases["wpa_2g"] = True
                         except Exception as e:
                             print(e)
