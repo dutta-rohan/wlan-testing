@@ -479,6 +479,8 @@ class UProfileUtility:
                 print("hi", ssid_info)
             if options == "rate-limit":
                 ssid_info[options] = ssid_data[options]
+            if options == "maximum-clients":
+                ssid_info[options] = ssid_data[options]
         for i in ssid_data["appliedRadios"]:
             ssid_info["wifi-bands"].append(i)
         ssid_info['encryption'] = {}
