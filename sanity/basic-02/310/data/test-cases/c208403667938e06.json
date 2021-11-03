@@ -1,0 +1,983 @@
+{
+  "uid" : "c208403667938e06",
+  "name" : "test_wpa_ssid_2g[setup_profiles0]",
+  "fullName" : "e2e.basic.validation_of_operating_modes.vlan_mode.client_connectivity.test_general_security_modes.TestvlanModeConnectivitySuiteA#test_wpa_ssid_2g",
+  "historyId" : "25e57dc8f50354b1f1a10b49a6b527c4",
+  "time" : {
+    "start" : 1635888969059,
+    "stop" : 1635888969059,
+    "duration" : 0
+  },
+  "description" : "Client Connectivity wpa ssid 2.4G\n           pytest -m \"client_connectivity and vlan and general and wpa and twog\"\n        ",
+  "descriptionHtml" : "<p>Client Connectivity wpa ssid 2.4G\npytest -m &quot;client_connectivity and vlan and general and wpa and twog&quot;</p>\n",
+  "status" : "failed",
+  "statusMessage" : "Failed: AP latest and active are different",
+  "statusTrace" : "request = <SubRequest 'setup_profiles' for <Function test_open_ssid_2g[setup_profiles0]>>\nsetup_controller = <controller.controller_2x.controller.Controller object at 0x7fc85392be20>\ntestbed = 'basic-02', get_equipment_ref = ['34efb6af48db']\nfixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7fc85392bdc0>\nreset_scenario_lf = ''\ninstantiate_profile = <class 'controller.controller_2x.controller.UProfileUtility'>\nget_markers = {'fiveg': True, 'open': True, 'radius': False, 'twog': True, ...}\ncreate_lanforge_chamberview_dut = 'basic-02'\nlf_tools = <lanforge.lf_tools.ChamberView object at 0x7fc851a33a90>\nget_security_flags = ['open', 'wpa', 'wep', 'wpa2_personal', 'wpa3_personal', 'wpa3_personal_mixed', ...]\nget_configuration = {'access_point': [{'ip': '10.28.3.100', 'jumphost': True, 'jumphost_tty': '/dev/ttyAP2', 'mode': 'wifi6', ...}], 'cont...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan0', ...}, 'name': 'lanforge'}}\nradius_info = {'ip': '10.10.1.221', 'password': 'password', 'pk_password': 'whatever', 'port': 1812, ...}\nget_apnos = <class 'apnos.apnos.APNOS'>\nradius_accounting_info = {'ip': '10.10.1.221', 'password': 'password', 'pk_password': 'whatever', 'port': 1813, ...}\n\n    @pytest.fixture(scope=\"class\")\n    def setup_profiles(request, setup_controller, testbed, get_equipment_ref, fixtures_ver, reset_scenario_lf,\n                       instantiate_profile, get_markers, create_lanforge_chamberview_dut, lf_tools,\n                       get_security_flags, get_configuration, radius_info, get_apnos, radius_accounting_info):\n        param = dict(request.param)\n    \n        # VLAN Setup\n        if request.param[\"mode\"] == \"VLAN\":\n    \n            vlan_list = list()\n            refactored_vlan_list = list()\n            ssid_modes = request.param[\"ssid_modes\"].keys()\n            for mode in ssid_modes:\n                for ssid in range(len(request.param[\"ssid_modes\"][mode])):\n                    if \"vlan\" in request.param[\"ssid_modes\"][mode][ssid]:\n                        vlan_list.append(request.param[\"ssid_modes\"][mode][ssid][\"vlan\"])\n                    else:\n                        pass\n            if vlan_list:\n                [refactored_vlan_list.append(x) for x in vlan_list if x not in refactored_vlan_list]\n                vlan_list = refactored_vlan_list\n                for i in range(len(vlan_list)):\n                    if vlan_list[i] > 4095 or vlan_list[i] < 1:\n                        vlan_list.pop(i)\n        if request.param[\"mode\"] == \"VLAN\":\n            lf_tools.add_vlan(vlan_ids=vlan_list)\n    \n        # call this, if 1.x\n>       return_var = fixtures_ver.setup_profiles(request, param, setup_controller, testbed, get_equipment_ref,\n                                                 instantiate_profile,\n                                                 get_markers, create_lanforge_chamberview_dut, lf_tools,\n                                                 get_security_flags, get_configuration, radius_info, get_apnos,\n                                                 radius_accounting_info)\n\ne2e/basic/conftest.py:77: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <fixtures_2x.Fixtures_2x object at 0x7fc85392bdc0>\nrequest = <SubRequest 'setup_profiles' for <Function test_open_ssid_2g[setup_profiles0]>>\nparam = {'mode': 'VLAN', 'radius': False, 'rf': {}, 'ssid_modes': {'open': [{'appliedRadios': ['2G'], 'security': 'none', 'sec...}, {'appliedRadios': ['5G'], 'security': 'psk2', 'security_key': 'something', 'ssid_name': 'ssid_wpa2_5g_vlan', ...}]}}\nsetup_controller = <controller.controller_2x.controller.Controller object at 0x7fc85392be20>\ntestbed = 'basic-02', get_equipment_ref = ['34efb6af48db']\ninstantiate_profile = <class 'controller.controller_2x.controller.UProfileUtility'>\nget_markers = {'fiveg': True, 'open': True, 'radius': False, 'twog': True, ...}\ncreate_lanforge_chamberview_dut = 'basic-02'\nlf_tools = <lanforge.lf_tools.ChamberView object at 0x7fc851a33a90>\nget_security_flags = ['open', 'wpa', 'wep', 'wpa2_personal', 'wpa3_personal', 'wpa3_personal_mixed', ...]\nget_configuration = {'access_point': [{'ip': '10.28.3.100', 'jumphost': True, 'jumphost_tty': '/dev/ttyAP2', 'mode': 'wifi6', ...}], 'cont...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan0', ...}, 'name': 'lanforge'}}\nradius_info = {'ip': '10.10.1.221', 'password': 'password', 'pk_password': 'whatever', 'port': 1812, ...}\nget_apnos = <class 'apnos.apnos.APNOS'>\nradius_accounting_info = {'ip': '10.10.1.221', 'password': 'password', 'pk_password': 'whatever', 'port': 1813, ...}\n\n    def setup_profiles(self, request, param, setup_controller, testbed, get_equipment_ref,\n                       instantiate_profile, get_markers, create_lanforge_chamberview_dut, lf_tools,\n                       get_security_flags, get_configuration, radius_info, get_apnos, radius_accounting_info):\n    \n        instantiate_profile_obj = instantiate_profile(sdk_client=setup_controller)\n        print(1, instantiate_profile_obj.sdk_client)\n        vlan_id, mode = 0, 0\n        parameter = dict(param)\n        test_cases = {}\n        profile_data = {}\n    \n        if parameter['mode'] not in [\"BRIDGE\", \"NAT\", \"VLAN\"]:\n            print(\"Invalid Mode: \", parameter['mode'])\n            return test_cases\n    \n        instantiate_profile_obj.set_radio_config()\n    \n        if parameter['mode'] == \"NAT\":\n            mode = \"NAT\"\n            instantiate_profile_obj.set_mode(mode=mode)\n            vlan_id = 1\n        if parameter['mode'] == \"BRIDGE\":\n            mode = \"BRIDGE\"\n            instantiate_profile_obj.set_mode(mode=mode)\n            vlan_id = 1\n        if parameter['mode'] == \"VLAN\":\n            mode = \"VLAN\"\n            instantiate_profile_obj.set_mode(mode=mode)\n        profile_data[\"ssid\"] = {}\n    \n        for i in parameter[\"ssid_modes\"]:\n            profile_data[\"ssid\"][i] = []\n            for j in range(len(parameter[\"ssid_modes\"][i])):\n                data = parameter[\"ssid_modes\"][i][j]\n                profile_data[\"ssid\"][i].append(data)\n        lf_dut_data = []\n        for mode in profile_data['ssid']:\n            if mode == \"open\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'none'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa_2g\"] = False\n            if mode == \"wpa\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'psk'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa_2g\"] = False\n            if mode == \"wpa2_personal\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'psk2'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa2_personal\"] = False\n            if mode == \"wpa_wpa2_personal_mixed\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'psk-mixed'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa2_personal\"] = False\n            if mode == \"wpa3_personal\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'sae'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa2_personal\"] = False\n            if mode == \"wpa3_personal_mixed\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'sae-mixed'\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa2_personal\"] = False\n            # EAP SSID Modes\n            if mode == \"wpa2_enterprise\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'wpa2'\n                            RADIUS_SERVER_DATA = radius_info\n                            RADIUS_ACCOUNTING_DATA = radius_accounting_info\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j, radius=True,\n                                                                               radius_auth_data=RADIUS_SERVER_DATA,\n                                                                               radius_accounting_data=RADIUS_ACCOUNTING_DATA)\n                            test_cases[\"wpa_2g\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa2_personal\"] = False\n            if mode == \"wpa3_enterprise\":\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'wpa3'\n                            RADIUS_SERVER_DATA = radius_info\n                            RADIUS_ACCOUNTING_DATA = radius_accounting_info\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j, radius=True,\n                                                                               radius_auth_data=RADIUS_SERVER_DATA,\n                                                                               radius_accounting_data=RADIUS_ACCOUNTING_DATA)\n                            test_cases[\"wpa3_eap\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa3_eap\"] = False\n            if mode == \"wpa_enterprise\":  # -------WPA Enterprise----------------\n                for j in profile_data[\"ssid\"][mode]:\n                    if mode in get_markers.keys() and get_markers[mode]:\n                        try:\n                            if j[\"appliedRadios\"].__contains__(\"2G\"):\n                                lf_dut_data.append(j)\n                            if j[\"appliedRadios\"].__contains__(\"5G\"):\n                                lf_dut_data.append(j)\n                            j[\"appliedRadios\"] = list(set(j[\"appliedRadios\"]))\n                            j['security'] = 'wpa'\n                            RADIUS_SERVER_DATA = radius_info\n                            RADIUS_ACCOUNTING_DATA = radius_accounting_info\n                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j, radius=True,\n                                                                               radius_auth_data=RADIUS_SERVER_DATA,\n                                                                               radius_accounting_data=RADIUS_ACCOUNTING_DATA)\n                            test_cases[\"wpa_eap\"] = True\n                        except Exception as e:\n                            print(e)\n                            test_cases[\"wpa_eap\"] = False\n    \n        ap_ssh = get_apnos(get_configuration['access_point'][0], pwd=\"../libs/apnos/\", sdk=\"2.x\")\n    \n        # Get ucentral status\n        connected, latest, active = ap_ssh.get_ucentral_status()\n    \n        if connected == False:\n            output = ap_ssh.run_generic_command(cmd=\"ubus call ucentral status\")\n            allure.attach(name=\"ubus call ucentral status: \", body=str(output))\n            pytest.exit(\"AP is disconnected from UC Gateway\")\n    \n        connected, latest, active = ap_ssh.get_ucentral_status()\n        latest_old = latest\n    \n        if latest != active:\n            active_cfg = ap_ssh.run_generic_command(cmd=\"cat /etc/ucentral/ucentral.active\")\n            allure.attach(name=\"Active Config: \", body=str(active_cfg))\n            active_cfg = ap_ssh.run_generic_command(cmd=\"cat /etc/ucentral/ucentral.cfg.\" + str(latest))\n            allure.attach(name=\"Latest Config: \", body=str(active_cfg))\n            ap_logs = ap_ssh.logread()\n            allure.attach(body=ap_logs, name=\"FAILURE: AP Logs: \")\n>           pytest.fail(\"AP latest and active are different\")\nE           Failed: AP latest and active are different\n\nfixtures_2x.py:531: Failed",
+  "flaky" : true,
+  "newFailed" : true,
+  "beforeStages" : [ {
+    "name" : "setup_controller",
+    "time" : {
+      "start" : 1635885614034,
+      "stop" : 1635885614034,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_influx",
+    "time" : {
+      "start" : 1635886341264,
+      "stop" : 1635886341265,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "create_lanforge_chamberview_dut",
+    "time" : {
+      "start" : 1635886353166,
+      "stop" : 1635886356214,
+      "duration" : 3048
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools",
+    "time" : {
+      "start" : 1635886341270,
+      "stop" : 1635886343748,
+      "duration" : 2478
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1635885547595,
+      "stop" : 1635885547595,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info",
+    "time" : {
+      "start" : 1635886341268,
+      "stop" : 1635886341268,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1635885547593,
+      "stop" : 1635885547594,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_sdk_version",
+    "time" : {
+      "start" : 1635885547705,
+      "stop" : 1635885547736,
+      "duration" : 31
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers",
+    "time" : {
+      "start" : 1635886353165,
+      "stop" : 1635886353166,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_env_properties",
+    "time" : {
+      "start" : 1635885547736,
+      "stop" : 1635885614034,
+      "duration" : 66298
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile",
+    "time" : {
+      "start" : 1635886353164,
+      "stop" : 1635886353164,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags",
+    "time" : {
+      "start" : 1635886353165,
+      "stop" : 1635886353165,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_equipment_ref",
+    "time" : {
+      "start" : 1635886341269,
+      "stop" : 1635886341269,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles",
+    "time" : {
+      "start" : 1635888635880,
+      "stop" : 1635888968669,
+      "duration" : 332789
+    },
+    "status" : "failed",
+    "statusMessage" : "Failed: AP latest and active are different\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/pluggy/callers.py\", line 187, in _multicall\n    res = hook_impl.function(*args)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 1126, in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 925, in call_fixture_func\n    fixture_result = next(generator)\n  File \"/wlan-testing/tests/e2e/basic/conftest.py\", line 77, in setup_profiles\n    return_var = fixtures_ver.setup_profiles(request, param, setup_controller, testbed, get_equipment_ref,\n  File \"/wlan-testing/tests/fixtures_2x.py\", line 531, in setup_profiles\n    pytest.fail(\"AP latest and active are different\")\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/outcomes.py\", line 153, in fail\n    raise Failed(msg=msg, pytrace=pytrace)\n",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "f30ab4d54713980e",
+      "name" : "Active Config: ",
+      "source" : "f30ab4d54713980e.attach",
+      "type" : "text/plain",
+      "size" : 2
+    }, {
+      "uid" : "e01bb16590a1277b",
+      "name" : "Latest Config: ",
+      "source" : "e01bb16590a1277b.attach",
+      "type" : "text/plain",
+      "size" : 2
+    }, {
+      "uid" : "322ebd3ead1d3f5b",
+      "name" : "FAILURE: AP Logs: ",
+      "source" : "322ebd3ead1d3f5b.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 3,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "update_report",
+    "time" : {
+      "start" : 1635886341267,
+      "stop" : 1635886341267,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "station_names_twog",
+    "time" : {
+      "start" : 1635886341264,
+      "stop" : 1635886341264,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "test_cases",
+    "time" : {
+      "start" : 1635886341267,
+      "stop" : 1635886341267,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1635885547736,
+      "stop" : 1635885547736,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1635885547595,
+      "stop" : 1635885547704,
+      "duration" : 109
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "reset_scenario_lf",
+    "time" : {
+      "start" : 1635886343748,
+      "stop" : 1635886353164,
+      "duration" : 9416
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_accounting_info",
+    "time" : {
+      "start" : 1635886356214,
+      "stop" : 1635886356214,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1635885547594,
+      "stop" : 1635885547594,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_test",
+    "time" : {
+      "start" : 1635886341265,
+      "stop" : 1635886341265,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "afterStages" : [ {
+    "name" : "setup_controller::1",
+    "time" : {
+      "start" : 1635889315121,
+      "stop" : 1635889315121,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller::disconnect",
+    "time" : {
+      "start" : 1635889315121,
+      "stop" : 1635889315189,
+      "duration" : 68
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_influx::0",
+    "time" : {
+      "start" : 1635889315365,
+      "stop" : 1635889315365,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools::0",
+    "time" : {
+      "start" : 1635889315110,
+      "stop" : 1635889315110,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1635889315573,
+      "stop" : 1635889315573,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info::0",
+    "time" : {
+      "start" : 1635889305574,
+      "stop" : 1635889305574,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1635889315684,
+      "stop" : 1635889315693,
+      "duration" : 9
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_sdk_version::0",
+    "time" : {
+      "start" : 1635889315206,
+      "stop" : 1635889315206,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers::0",
+    "time" : {
+      "start" : 1635889305583,
+      "stop" : 1635889305583,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile::0",
+    "time" : {
+      "start" : 1635889305674,
+      "stop" : 1635889305674,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags::0",
+    "time" : {
+      "start" : 1635889305665,
+      "stop" : 1635889305665,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_equipment_ref::0",
+    "time" : {
+      "start" : 1635889315115,
+      "stop" : 1635889315115,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "update_report::0",
+    "time" : {
+      "start" : 1635889315294,
+      "stop" : 1635889315294,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "station_names_twog::0",
+    "time" : {
+      "start" : 1635889315368,
+      "stop" : 1635889315368,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "test_cases::0",
+    "time" : {
+      "start" : 1635889315295,
+      "stop" : 1635889315295,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1635889315202,
+      "stop" : 1635889315202,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1635889315293,
+      "stop" : 1635889315293,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "reset_scenario_lf::1",
+    "time" : {
+      "start" : 1635889305678,
+      "stop" : 1635889305678,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "reset_scenario_lf::teardown_session",
+    "time" : {
+      "start" : 1635889305678,
+      "stop" : 1635889315096,
+      "duration" : 9418
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_accounting_info::0",
+    "time" : {
+      "start" : 1635889305571,
+      "stop" : 1635889305571,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1635889315675,
+      "stop" : 1635889315675,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_test::0",
+    "time" : {
+      "start" : 1635889315296,
+      "stop" : 1635889315296,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "vlan MODE CLIENT CONNECTIVITY"
+  }, {
+    "name" : "story",
+    "value" : "wpa 2.4 GHZ Band"
+  }, {
+    "name" : "tag",
+    "value" : "wpa"
+  }, {
+    "name" : "tag",
+    "value" : "vlan"
+  }, {
+    "name" : "tag",
+    "value" : "@pytest.mark.usefixtures('setup_profiles')"
+  }, {
+    "name" : "tag",
+    "value" : "ucentral"
+  }, {
+    "name" : "tag",
+    "value" : "uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "twog"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "tag",
+    "value" : "general"
+  }, {
+    "name" : "tag",
+    "value" : "sanity_light"
+  }, {
+    "name" : "tag",
+    "value" : "client_connectivity"
+  }, {
+    "name" : "tag",
+    "value" : "suiteA"
+  }, {
+    "name" : "parentSuite",
+    "value" : "e2e.basic.validation_of_operating_modes.vlan_mode.client_connectivity"
+  }, {
+    "name" : "suite",
+    "value" : "test_general_security_modes"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestvlanModeConnectivitySuiteA"
+  }, {
+    "name" : "host",
+    "value" : "testing-310-6r58q"
+  }, {
+    "name" : "thread",
+    "value" : "7-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "e2e.basic.validation_of_operating_modes.vlan_mode.client_connectivity.test_general_security_modes"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "setup_profiles",
+    "value" : "{'mode': 'VLAN', 'ssid_modes': {'open': [{'ssid_name': 'ssid_open_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'none'}, {'ssid_name': 'ssid_open_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'none'}], 'wpa': [{'ssid_name': 'ssid_wpa_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk'}, {'ssid_name': 'ssid_wpa_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk'}], 'wpa2_personal': [{'ssid_name': 'ssid_wpa2_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk2'}, {'ssid_name': 'ssid_wpa2_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk2'}]}, 'rf': {}, 'radius': False}"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 21,
+        "broken" : 18,
+        "skipped" : 2,
+        "passed" : 50,
+        "unknown" : 0,
+        "total" : 91
+      },
+      "items" : [ {
+        "uid" : "90a3ee87ef5254f0",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635804298931,
+          "stop" : 1635804385819,
+          "duration" : 86888
+        }
+      }, {
+        "uid" : "46534f20212c3c20",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635758143318,
+          "stop" : 1635758224745,
+          "duration" : 81427
+        }
+      }, {
+        "uid" : "20ed8d756d7f056",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1635717887267,
+          "stop" : 1635718044058,
+          "duration" : 156791
+        }
+      }, {
+        "uid" : "46f91e4db3d13a0d",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635667906485,
+          "stop" : 1635667991265,
+          "duration" : 84780
+        }
+      }, {
+        "uid" : "301631f62b3f470d",
+        "status" : "failed",
+        "statusDetails" : "Failed: AP latest and active are different",
+        "time" : {
+          "start" : 1635633948974,
+          "stop" : 1635633948974,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "76e48d7f23a7e776",
+        "status" : "failed",
+        "statusDetails" : "Failed: AP latest and active are different",
+        "time" : {
+          "start" : 1635607755156,
+          "stop" : 1635607755156,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "4e72122e0f8d2a6a",
+        "status" : "broken",
+        "statusDetails" : "NameError: Invalid response code.",
+        "time" : {
+          "start" : 1635567589400,
+          "stop" : 1635567589400,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b8f3cd184d931856",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1635544264439,
+          "stop" : 1635544422898,
+          "duration" : 158459
+        }
+      }, {
+        "uid" : "c25fb2b47de18199",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635528066011,
+          "stop" : 1635528150599,
+          "duration" : 84588
+        }
+      }, {
+        "uid" : "328f753271910197",
+        "status" : "broken",
+        "statusDetails" : "TypeError: 'NoneType' object is not subscriptable",
+        "time" : {
+          "start" : 1635502663515,
+          "stop" : 1635502663515,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "f35a4642c55d71d5",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='gw-1393912822.cicd.lab.wlan.tip.build', port=16002): Read timed out. (read timeout=100)",
+        "time" : {
+          "start" : 1635416532851,
+          "stop" : 1635416532851,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "589e438568b05f4a",
+        "status" : "broken",
+        "statusDetails" : "NameError: Invalid response code.",
+        "time" : {
+          "start" : 1635330322945,
+          "stop" : 1635330322945,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b1d45798b9340210",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1635230296856,
+          "stop" : 1635230453417,
+          "duration" : 156561
+        }
+      }, {
+        "uid" : "18ec49b17e47fc75",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635115280255,
+          "stop" : 1635115351822,
+          "duration" : 71567
+        }
+      }, {
+        "uid" : "3d5d8d512a18b272",
+        "status" : "passed",
+        "time" : {
+          "start" : 1634682597966,
+          "stop" : 1634682674493,
+          "duration" : 76527
+        }
+      }, {
+        "uid" : "83b17da89c5efc97",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1634654220872,
+          "stop" : 1634654377409,
+          "duration" : 156537
+        }
+      }, {
+        "uid" : "63008777056fbe87",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "time" : {
+          "start" : 1634158544610,
+          "stop" : 1634158544610,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "14abfcef151c1dc7",
+        "status" : "passed",
+        "time" : {
+          "start" : 1633903927087,
+          "stop" : 1633903998366,
+          "duration" : 71279
+        }
+      }, {
+        "uid" : "c372dc60cfdb6d38",
+        "status" : "passed",
+        "time" : {
+          "start" : 1633731227049,
+          "stop" : 1633731316542,
+          "duration" : 89493
+        }
+      }, {
+        "uid" : "9af81cb8c70cbb18",
+        "status" : "passed",
+        "time" : {
+          "start" : 1633644727670,
+          "stop" : 1633644808415,
+          "duration" : 80745
+        }
+      } ]
+    },
+    "tags" : [ "ucentral", "@pytest.mark.usefixtures('setup_profiles')", "general", "vlan", "suiteA", "wpa", "sanity", "sanity_light", "client_connectivity", "uc_sanity", "twog" ]
+  },
+  "source" : "c208403667938e06.json",
+  "parameterValues" : [ "{'mode': 'VLAN', 'ssid_modes': {'open': [{'ssid_name': 'ssid_open_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'none'}, {'ssid_name': 'ssid_open_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'none'}], 'wpa': [{'ssid_name': 'ssid_wpa_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk'}, {'ssid_name': 'ssid_wpa_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk'}], 'wpa2_personal': [{'ssid_name': 'ssid_wpa2_2g_vlan', 'appliedRadios': ['2G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk2'}, {'ssid_name': 'ssid_wpa2_5g_vlan', 'appliedRadios': ['5G'], 'security_key': 'something', 'vlan': 100, 'security': 'psk2'}]}, 'rf': {}, 'radius': False}" ]
+}
