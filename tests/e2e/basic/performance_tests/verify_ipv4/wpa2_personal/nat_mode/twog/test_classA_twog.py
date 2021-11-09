@@ -82,5 +82,5 @@ class TestClassAIP(object):
         else:
             print("station didn't got ip")
             assert False
-        allure.attach("assigned subnet...%s"%(setup_params_general["ipv4"]["subnet"]))
-        allure.attach("Received subnet....%s" %('.'.join(station_ip)))
+        allure.attach("applied subnet to AP...%s" % (setup_params_general["ipv4"]["subnet"]))
+        allure.attach("Received subnet from station...%s" % ('.'.join(station_ip)))
