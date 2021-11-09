@@ -25,10 +25,6 @@ setup_params_general = {
     "radius": False
 }
 
-
-@pytest.mark.verify_ClassD_ip
-@pytest.mark.wifi5
-@pytest.mark.wifi6
 @pytest.mark.parametrize(
     'setup_profiles',
     [setup_params_general],
@@ -61,7 +57,7 @@ class TestClassDIP(object):
         print(lf_tools.dut_idx_mapping)
         dut_5g = ""
         dut_2g = ""
-        upstream_port = "1.1.eth2"
+        upstream_port = lf_tools.upstream_port
         # upstream_port = get_configuration["upstream"]
         print(upstream_port)
         port_resources = upstream_port.split(".")
@@ -75,17 +71,19 @@ class TestClassDIP(object):
                                          station_name=station_names_twog, vlan_id=vlan)
         if station:
             station_ip = lf_tools.json_get("/port/" + port_resources[0] + "/" + port_resources[1] + "/" +
-                                           station_names_twog[1])["interface"]["ip"]
+                                           station_names_twog[0])["interface"]["ip"]
 
             station_ip = station_ip.split(".")
-            config_ip = setup_params_general["ipv4"]["subnet"]
+            config_ip = setup_params_general["ipv4"]["subnet"].split(".")
 
             print(station_ip[0:4], config_ip[0:4])
             for i, j in zip(station_ip[:4], config_ip[:4]):
                 if i != j:
-                    print("station didn't got ip as per ClassD subnet")
+                    print("station didn't got ip as per ClassC subnet")
                     assert False
 
+            print("station got ip as per ClassC subnet")
             assert True
-            print("station got ip as per ClassD subnet")
-        assert True
+        else:
+            print("station didn't got ip")
+            assert False

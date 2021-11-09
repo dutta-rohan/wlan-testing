@@ -9,7 +9,8 @@ import os
 import allure
 import pytest
 
-pytestmark = [pytest.mark.regression,pytest.mark.isolate_clients,pytest.mark.wpa2_personal, pytest.mark.nat,pytest.mark.twog]
+pytestmark = [pytest.mark.regression, pytest.mark.verify_classA_ip, pytest.mark.wpa2_personal, pytest.mark.nat,
+              pytest.mark.twog]
 
 setup_params_general = {
     "mode": "NAT",
@@ -18,16 +19,12 @@ setup_params_general = {
             {"ssid_name": "ssid_wpa2_2g", "appliedRadios": ["2G"], "security_key": "something"},
             {"ssid_name": "ssid_wpa2_5g", "appliedRadios": ["5G"], "security_key": "something"}]},
     "rf": {},
-    "ipv4":{"addressing": "static","subnet": "10.168.1.1/8",
-            "dhcp": {"lease-first": 10,"lease-count": 100,"lease-time": "6h" }
-            },
+    "ipv4": {"addressing": "static", "subnet": "10.168.1.1/8",
+             "dhcp": {"lease-first": 10, "lease-count": 100, "lease-time": "6h"}
+             },
     "radius": False
 }
 
-
-@pytest.mark.verify_classA_ip
-@pytest.mark.wifi5
-@pytest.mark.wifi6
 @pytest.mark.parametrize(
     'setup_profiles',
     [setup_params_general],
@@ -37,12 +34,13 @@ setup_params_general = {
 @pytest.mark.usefixtures("setup_profiles")
 class TestClassAIP(object):
 
+    @pytest.mark.mahesh
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
     @allure.testcase(name="test_classA_ip",
                      url="https://telecominfraproject.atlassian.net/browse/WIFI-4874")
     def test_classA_ip(self, get_vif_state, lf_tools,
-                                create_lanforge_chamberview_dut, lf_test,station_names_twog, get_configuration):
+                       create_lanforge_chamberview_dut, lf_test, station_names_twog, get_configuration):
         """
         pytest -m "verify_classA_ip and wpa2_personal and nat and twog"
 
@@ -60,8 +58,8 @@ class TestClassAIP(object):
         print(lf_tools.dut_idx_mapping)
         dut_5g = ""
         dut_2g = ""
-        upstream_port = "1.1.eth2"
-        #upstream_port = get_configuration["upstream"]
+        upstream_port = lf_tools.upstream_port
+        # upstream_port = get_configuration["upstream"]
         print(upstream_port)
         port_resources = upstream_port.split(".")
 
@@ -72,18 +70,28 @@ class TestClassAIP(object):
         station = lf_test.Client_Connect(ssid=ssid_2G, security=security,
                                          passkey=security_key_2G, mode=mode, band=band,
                                          station_name=station_names_twog, vlan_id=vlan)
+        print(station)
+        '''
+        if station != True:
+            print("station didn't got ip")
+            assert False
+        else:
+        '''
         if station:
             station_ip = lf_tools.json_get("/port/" + port_resources[0] + "/" + port_resources[1] + "/" +
-                                           station_names_twog[1])["interface"]["ip"]
+                                           station_names_twog[0])["interface"]["ip"]
 
             station_ip = station_ip.split(".")
-            config_ip = setup_params_general["ipv4"]["subnet"]
+            config_ip = setup_params_general["ipv4"]["subnet"].split(".")
 
             print(station_ip[0], config_ip[0])
             if station_ip[0] != config_ip[0]:
                 print("station didn't got ip as per ClassA subnet")
                 assert False
             else:
-                assert True
                 print("station got ip as per ClassA subnet")
-        assert True
+                assert True
+        else:
+            print("station didn't got ip")
+            assert False
+
