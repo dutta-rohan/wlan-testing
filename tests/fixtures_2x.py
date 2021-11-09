@@ -331,9 +331,11 @@ class Fixtures_2x:
         print(1, instantiate_profile_obj.sdk_client)
         vlan_id, mode = 0, 0
         parameter = dict(param)
+        print("paramater...",parameter)
         test_cases = {}
         profile_data = {}
-        if "ipv4" in dict.keys():
+        if "ipv4" in parameter.keys():
+            print(parameter.keys())
             ipv4_data = parameter["ipv4"]
 
         if parameter['mode'] not in ["BRIDGE", "NAT", "VLAN"]:
