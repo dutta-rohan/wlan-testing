@@ -338,7 +338,11 @@ class Fixtures_2x:
             print("Invalid Mode: ", parameter['mode'])
             return test_cases
 
-        instantiate_profile_obj.set_radio_config()
+        if parameter["rf"] is not None:
+            instantiate_profile_obj.set_radio_config(radio_config=parameter["rf"])
+        else:
+            instantiate_profile_obj.set_radio_config()
+
 
         if parameter['mode'] == "NAT":
             mode = "NAT"
