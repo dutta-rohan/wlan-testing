@@ -21,6 +21,7 @@ setup_params_general = {
     "radius": False
 }
 
+
 @pytest.mark.parametrize(
     "setup_profiles",
     [setup_params_general],
@@ -35,16 +36,16 @@ class TestMaxClientPerradio(object):
     @allure.testcase(name="test_max_client_per_radio_wpa2_nat_twog",
                      url="https://telecominfraproject.atlassian.net/browse/WIFI-5757")
     def test_max_client_per_radio_wpa2_nat_twog(self, get_vif_state, lf_tools,
-                                      create_lanforge_chamberview_dut, lf_test, get_configuration):
+                                                create_lanforge_chamberview_dut, lf_test, get_configuration):
         '''
-            pytest -m "max_client_per_ssid and wpa2_personal and twog
+            pytest -m "max_client_per_radio and wpa2_personal and twog
         '''
 
         profile_data = setup_params_general["ssid_modes"]["wpa2_personal"]
         ssid = profile_data[0]["ssid_name"]
         mode = setup_params_general["mode"]
         vlan = 1
-        num_sta_max = (profile_data[0]["maximum-clients"])
+        num_sta_max = setup_params_general["rf"]["maximum-clients"]
         print(lf_tools.dut_idx_mapping)
         lf_tools.add_stations(band="2G", num_stations=int(num_sta_max) + 1, dut=lf_tools.dut_name, ssid_name=ssid)
         lf_tools.Chamber_View()
