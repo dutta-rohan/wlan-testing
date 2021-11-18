@@ -331,10 +331,13 @@ class Fixtures_2x:
         print(1, instantiate_profile_obj.sdk_client)
         vlan_id, mode = 0, 0
         parameter = dict(param)
-        print("paramater...",parameter)
+        print("paramater...", parameter)
         test_cases = {}
         profile_data = {}
+        subnet = False
+        ipv4_data = ""
         if "ipv4" in parameter.keys():
+            subnet = True
             print(parameter.keys())
             ipv4_data = parameter["ipv4"]
 
@@ -404,7 +407,10 @@ class Fixtures_2x:
                                 lf_dut_data.append(j)
                             j["appliedRadios"] = list(set(j["appliedRadios"]))
                             j['security'] = 'psk2'
-                            creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j,ipv4=ipv4_data)
+                            if subnet:
+                                creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j, ipv4=ipv4_data)
+                            else:
+                                creates_profile = instantiate_profile_obj.add_ssid(ssid_data=j)
                             test_cases["wpa_2g"] = True
                         except Exception as e:
                             print(e)
@@ -687,22 +693,21 @@ class Fixtures_2x:
     # comment
     def setup_mesh_profile(self, get_apnos, get_configuration):
         # this will return configuration of your testbed from tests/conftest.py get_configuration fixtures
-        print("get configuration",get_configuration)
+        print("get configuration", get_configuration)
         print(len(get_configuration['access_point']))
         # print(get_configuration['access_point'])
-        for length in range(0,len(get_configuration['access_point'])):
+        for length in range(0, len(get_configuration['access_point'])):
             ap_ssh = get_apnos(credentials=get_configuration['access_point'][length], pwd="../libs/apnos/", sdk="2.x")
             connected, latest, active = ap_ssh.get_ucentral_status()
             print("connected", connected)
-            print("latest",latest)
+            print("latest", latest)
             print("active", active)
             if connected == False:
                 pytest.exit("AP is disconnected from UC Gateway")
             if latest != active:
-                allure.attach(name="FAIL : ubus call ucentral status: ", body="connected: " + str(connected) + "\nlatest: " + str(latest) + "\nactive: " + str(active))
+                allure.attach(name="FAIL : ubus call ucentral status: ",
+                              body="connected: " + str(connected) + "\nlatest: " + str(latest) + "\nactive: " + str(
+                                  active))
                 ap_logs = ap_ssh.logread()
                 allure.attach(body=ap_logs, name="FAILURE: AP LOgs: ")
                 pytest.fail("AP is disconnected from UC Gateway")
-
-
-
