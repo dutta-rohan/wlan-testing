@@ -1,0 +1,1025 @@
+{
+  "uid" : "89f72922f55d6ebd",
+  "name" : "test_ClientConnect_2g_wpa3_personal_Nat[setup_profiles0]",
+  "fullName" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.iOS.test_general_security_modes.TestNatModeConnectSuiteTwo#test_ClientConnect_2g_wpa3_personal_Nat",
+  "historyId" : "ce97d4968f483584b3272e26ed9c8047",
+  "time" : {
+    "start" : 1637362752577,
+    "stop" : 1637362752577,
+    "duration" : 0
+  },
+  "status" : "broken",
+  "statusMessage" : "urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='tip.perfectomobile.com', port=443): Max retries exceeded with url: /nexperience/perfectomobile/wd/hub/session (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))",
+  "statusTrace" : "self = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _new_conn(self):\n        \"\"\"Establish a socket connection and set nodelay settings on it.\n    \n        :return: New socket connection.\n        \"\"\"\n        extra_kw = {}\n        if self.source_address:\n            extra_kw[\"source_address\"] = self.source_address\n    \n        if self.socket_options:\n            extra_kw[\"socket_options\"] = self.socket_options\n    \n        try:\n>           conn = connection.create_connection(\n                (self._dns_host, self.port), self.timeout, **extra_kw\n            )\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:174: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\naddress = ('tip.perfectomobile.com', 443)\ntimeout = <object object at 0x7f64b2646a60>, source_address = None\nsocket_options = [(6, 1, 1)]\n\n    def create_connection(\n        address,\n        timeout=socket._GLOBAL_DEFAULT_TIMEOUT,\n        source_address=None,\n        socket_options=None,\n    ):\n        \"\"\"Connect to *address* and return the socket object.\n    \n        Convenience function.  Connect to *address* (a 2-tuple ``(host,\n        port)``) and return the socket object.  Passing the optional\n        *timeout* parameter will set the timeout on the socket instance\n        before attempting to connect.  If no *timeout* is supplied, the\n        global default timeout setting returned by :func:`socket.getdefaulttimeout`\n        is used.  If *source_address* is set it must be a tuple of (host, port)\n        for the socket to bind as a source address before making the connection.\n        An host of '' or port 0 tells the OS to use the default.\n        \"\"\"\n    \n        host, port = address\n        if host.startswith(\"[\"):\n            host = host.strip(\"[]\")\n        err = None\n    \n        # Using the value from allowed_gai_family() in the context of getaddrinfo lets\n        # us select whether to work with IPv4 DNS records, IPv6 records, or both.\n        # The original create_connection function always returns all records.\n        family = allowed_gai_family()\n    \n        try:\n            host.encode(\"idna\")\n        except UnicodeError:\n            return six.raise_from(\n                LocationParseError(u\"'%s', label empty or too long\" % host), None\n            )\n    \n>       for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n\n/usr/local/lib/python3.8/site-packages/urllib3/util/connection.py:73: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nhost = 'tip.perfectomobile.com', port = 443, family = <AddressFamily.AF_INET: 2>\ntype = <SocketKind.SOCK_STREAM: 1>, proto = 0, flags = 0\n\n    def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):\n        \"\"\"Resolve host and port into list of address info entries.\n    \n        Translate the host/port argument into a sequence of 5-tuples that contain\n        all the necessary arguments for creating a socket connected to that service.\n        host is a domain name, a string representation of an IPv4/v6 address or\n        None. port is a string service name such as 'http', a numeric port number or\n        None. By passing None as the value of host and port, you can pass NULL to\n        the underlying C API.\n    \n        The family, type and proto arguments can be optionally specified in order to\n        narrow the list of addresses returned. Passing zero as a value for each of\n        these arguments selects the full range of results.\n        \"\"\"\n        # We override this function since we want to translate the numeric family\n        # and socket type values to enum constants.\n        addrlist = []\n>       for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\nE       socket.gaierror: [Errno -3] Temporary failure in name resolution\n\n/usr/local/lib/python3.8/socket.py:918: gaierror\n\nDuring handling of the above exception, another exception occurred:\n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\nbody = '{\"capabilities\": {\"alwaysMatch\": {\"platformName\": \"iOS\", \"appium:model\": \"iPhone-11\", \"browserName\": \"safari\", \"appiu...IjjCIsj8NJm1p66dCsLJI5DBEmks\", \"useAppiumForWeb\": \"false\", \"autoAcceptAlerts\": \"true\", \"useAppiumForHybrid\": \"false\"}}'\nheaders = {'Accept': 'application/json', 'Connection': 'keep-alive', 'Content-Type': 'application/json;charset=UTF-8', 'User-Agent': 'appium/python 2.0.0 (selenium/4.0.0 (python linux))', ...}\nretries = Retry(total=0, connect=None, read=None, redirect=None, status=None)\nredirect = False, assert_same_host = False\ntimeout = <object object at 0x7f64b167d940>, pool_timeout = None\nrelease_conn = True, chunked = False, body_pos = None\nresponse_kw = {'request_url': 'https://tip.perfectomobile.com/nexperience/perfectomobile/wd/hub/session'}\nparsed_url = Url(scheme=None, auth=None, host=None, port=None, path='/nexperience/perfectomobile/wd/hub/session', query=None, fragment=None)\ndestination_scheme = None, conn = None, release_this_conn = True\nhttp_tunnel_required = False, err = None, clean_exit = False\n\n    def urlopen(\n        self,\n        method,\n        url,\n        body=None,\n        headers=None,\n        retries=None,\n        redirect=True,\n        assert_same_host=True,\n        timeout=_Default,\n        pool_timeout=None,\n        release_conn=None,\n        chunked=False,\n        body_pos=None,\n        **response_kw\n    ):\n        \"\"\"\n        Get a connection from the pool and perform an HTTP request. This is the\n        lowest level call for making a request, so you'll need to specify all\n        the raw details.\n    \n        .. note::\n    \n           More commonly, it's appropriate to use a convenience method provided\n           by :class:`.RequestMethods`, such as :meth:`request`.\n    \n        .. note::\n    \n           `release_conn` will only behave as expected if\n           `preload_content=False` because we want to make\n           `preload_content=False` the default behaviour someday soon without\n           breaking backwards compatibility.\n    \n        :param method:\n            HTTP request method (such as GET, POST, PUT, etc.)\n    \n        :param url:\n            The URL to perform the request on.\n    \n        :param body:\n            Data to send in the request body, either :class:`str`, :class:`bytes`,\n            an iterable of :class:`str`/:class:`bytes`, or a file-like object.\n    \n        :param headers:\n            Dictionary of custom headers to send, such as User-Agent,\n            If-None-Match, etc. If None, pool headers are used. If provided,\n            these headers completely replace any pool-specific headers.\n    \n        :param retries:\n            Configure the number of retries to allow before raising a\n            :class:`~urllib3.exceptions.MaxRetryError` exception.\n    \n            Pass ``None`` to retry until you receive a response. Pass a\n            :class:`~urllib3.util.retry.Retry` object for fine-grained control\n            over different types of retries.\n            Pass an integer number to retry connection errors that many times,\n            but no other types of errors. Pass zero to never retry.\n    \n            If ``False``, then retries are disabled and any exception is raised\n            immediately. Also, instead of raising a MaxRetryError on redirects,\n            the redirect response will be returned.\n    \n        :type retries: :class:`~urllib3.util.retry.Retry`, False, or an int.\n    \n        :param redirect:\n            If True, automatically handle redirects (status codes 301, 302,\n            303, 307, 308). Each redirect counts as a retry. Disabling retries\n            will disable redirect, too.\n    \n        :param assert_same_host:\n            If ``True``, will make sure that the host of the pool requests is\n            consistent else will raise HostChangedError. When ``False``, you can\n            use the pool on an HTTP proxy and request foreign hosts.\n    \n        :param timeout:\n            If specified, overrides the default timeout for this one\n            request. It may be a float (in seconds) or an instance of\n            :class:`urllib3.util.Timeout`.\n    \n        :param pool_timeout:\n            If set and the pool is set to block=True, then this method will\n            block for ``pool_timeout`` seconds and raise EmptyPoolError if no\n            connection is available within the time period.\n    \n        :param release_conn:\n            If False, then the urlopen call will not release the connection\n            back into the pool once a response is received (but will release if\n            you read the entire contents of the response such as when\n            `preload_content=True`). This is useful if you're not preloading\n            the response's content immediately. You will need to call\n            ``r.release_conn()`` on the response ``r`` to return the connection\n            back into the pool. If None, it takes the value of\n            ``response_kw.get('preload_content', True)``.\n    \n        :param chunked:\n            If True, urllib3 will send the body using chunked transfer\n            encoding. Otherwise, urllib3 will send the body using the standard\n            content-length form. Defaults to False.\n    \n        :param int body_pos:\n            Position to seek to in file-like body in the event of a retry or\n            redirect. Typically this won't need to be set because urllib3 will\n            auto-populate the value when needed.\n    \n        :param \\\\**response_kw:\n            Additional parameters are passed to\n            :meth:`urllib3.response.HTTPResponse.from_httplib`\n        \"\"\"\n    \n        parsed_url = parse_url(url)\n        destination_scheme = parsed_url.scheme\n    \n        if headers is None:\n            headers = self.headers\n    \n        if not isinstance(retries, Retry):\n            retries = Retry.from_int(retries, redirect=redirect, default=self.retries)\n    \n        if release_conn is None:\n            release_conn = response_kw.get(\"preload_content\", True)\n    \n        # Check host\n        if assert_same_host and not self.is_same_host(url):\n            raise HostChangedError(self, url, retries)\n    \n        # Ensure that the URL we're connecting to is properly encoded\n        if url.startswith(\"/\"):\n            url = six.ensure_str(_encode_target(url))\n        else:\n            url = six.ensure_str(parsed_url.url)\n    \n        conn = None\n    \n        # Track whether `conn` needs to be released before\n        # returning/raising/recursing. Update this variable if necessary, and\n        # leave `release_conn` constant throughout the function. That way, if\n        # the function recurses, the original value of `release_conn` will be\n        # passed down into the recursive call, and its value will be respected.\n        #\n        # See issue #651 [1] for details.\n        #\n        # [1] <https://github.com/urllib3/urllib3/issues/651>\n        release_this_conn = release_conn\n    \n        http_tunnel_required = connection_requires_http_tunnel(\n            self.proxy, self.proxy_config, destination_scheme\n        )\n    \n        # Merge the proxy headers. Only done when not using HTTP CONNECT. We\n        # have to copy the headers dict so we can safely change it without those\n        # changes being reflected in anyone else's copy.\n        if not http_tunnel_required:\n            headers = headers.copy()\n            headers.update(self.proxy_headers)\n    \n        # Must keep the exception bound to a separate variable or else Python 3\n        # complains about UnboundLocalError.\n        err = None\n    \n        # Keep track of whether we cleanly exited the except block. This\n        # ensures we do proper cleanup in finally.\n        clean_exit = False\n    \n        # Rewind body position, if needed. Record current position\n        # for future rewinds in the event of a redirect/retry.\n        body_pos = set_file_position(body, body_pos)\n    \n        try:\n            # Request a connection from the queue.\n            timeout_obj = self._get_timeout(timeout)\n            conn = self._get_conn(timeout=pool_timeout)\n    \n            conn.timeout = timeout_obj.connect_timeout\n    \n            is_new_proxy_conn = self.proxy is not None and not getattr(\n                conn, \"sock\", None\n            )\n            if is_new_proxy_conn and http_tunnel_required:\n                self._prepare_proxy(conn)\n    \n            # Make the request on the httplib connection object.\n>           httplib_response = self._make_request(\n                conn,\n                method,\n                url,\n                timeout=timeout_obj,\n                body=body,\n                headers=headers,\n                chunked=chunked,\n            )\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:699: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nconn = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\ntimeout = Timeout(connect=<object object at 0x7f64b2646a60>, read=<object object at 0x7f64b2646a60>, total=None)\nchunked = False\nhttplib_request_kw = {'body': '{\"capabilities\": {\"alwaysMatch\": {\"platformName\": \"iOS\", \"appium:model\": \"iPhone-11\", \"browserName\": \"safari...ent-Type': 'application/json;charset=UTF-8', 'User-Agent': 'appium/python 2.0.0 (selenium/4.0.0 (python linux))', ...}}\ntimeout_obj = Timeout(connect=<object object at 0x7f64b2646a60>, read=<object object at 0x7f64b2646a60>, total=None)\n\n    def _make_request(\n        self, conn, method, url, timeout=_Default, chunked=False, **httplib_request_kw\n    ):\n        \"\"\"\n        Perform a request on a given urllib connection object taken from our\n        pool.\n    \n        :param conn:\n            a connection from one of our connection pools\n    \n        :param timeout:\n            Socket timeout in seconds for the request. This can be a\n            float or integer, which will set the same timeout value for\n            the socket connect and the socket read, or an instance of\n            :class:`urllib3.util.Timeout`, which gives you more fine-grained\n            control over your timeouts.\n        \"\"\"\n        self.num_requests += 1\n    \n        timeout_obj = self._get_timeout(timeout)\n        timeout_obj.start_connect()\n        conn.timeout = timeout_obj.connect_timeout\n    \n        # Trigger any extra validation we need to do.\n        try:\n>           self._validate_conn(conn)\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:382: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nconn = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _validate_conn(self, conn):\n        \"\"\"\n        Called right before a request is made, after the socket is created.\n        \"\"\"\n        super(HTTPSConnectionPool, self)._validate_conn(conn)\n    \n        # Force connect early to allow us to validate the connection.\n        if not getattr(conn, \"sock\", None):  # AppEngine might not have  `.sock`\n>           conn.connect()\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:1010: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def connect(self):\n        # Add certificate verification\n>       conn = self._new_conn()\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:358: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _new_conn(self):\n        \"\"\"Establish a socket connection and set nodelay settings on it.\n    \n        :return: New socket connection.\n        \"\"\"\n        extra_kw = {}\n        if self.source_address:\n            extra_kw[\"source_address\"] = self.source_address\n    \n        if self.socket_options:\n            extra_kw[\"socket_options\"] = self.socket_options\n    \n        try:\n            conn = connection.create_connection(\n                (self._dns_host, self.port), self.timeout, **extra_kw\n            )\n    \n        except SocketTimeout:\n            raise ConnectTimeoutError(\n                self,\n                \"Connection to %s timed out. (connect timeout=%s)\"\n                % (self.host, self.timeout),\n            )\n    \n        except SocketError as e:\n>           raise NewConnectionError(\n                self, \"Failed to establish a new connection: %s\" % e\n            )\nE           urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:186: NewConnectionError\n\nDuring handling of the above exception, another exception occurred:\n\nrequest = <SubRequest 'setup_perfectoMobile_iOS' for <Function test_ClientConnect_2g_wpa3_personal_Nat[setup_profiles0]>>\n\n    @pytest.fixture(scope=\"function\")\n    def setup_perfectoMobile_iOS(request):\n        from appium import webdriver\n        driver = None\n        reporting_client = None\n    \n        warnings.simplefilter(\"ignore\", ResourceWarning)\n        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)\n    \n        capabilities = {\n            'platformName': request.config.getini(\"platformName-iOS\"),\n            'model': request.config.getini(\"model-iOS\"),\n            'browserName': 'safari',\n            # 'automationName' : 'Appium',\n            'securityToken': request.config.getini(\"securityToken\"),\n            'useAppiumForWeb': 'false',\n            'autoAcceptAlerts': 'true',\n            # 'bundleId' : request.config.getini(\"bundleId-iOS\"),\n            'useAppiumForHybrid': 'false',\n        }\n    \n>       driver = webdriver.Remote(\n            'https://' + request.config.getini(\"perfectoURL\") + '.perfectomobile.com/nexperience/perfectomobile/wd/hub',\n            capabilities)\n\ne2e/interOp/conftest.py:571: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py:273: in __init__\n    super().__init__(\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py:266: in __init__\n    self.start_session(capabilities, browser_profile)\n/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py:364: in start_session\n    response = self.execute(RemoteCommand.NEW_SESSION, parameters)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py:416: in execute\n    response = self.command_executor.execute(driver_command, params)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py:398: in execute\n    return self._request(command_info[0], url, body=data)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py:420: in _request\n    resp = self._conn.request(method, url, body=body, headers=headers)\n/usr/local/lib/python3.8/site-packages/urllib3/request.py:78: in request\n    return self.request_encode_body(\n/usr/local/lib/python3.8/site-packages/urllib3/request.py:170: in request_encode_body\n    return self.urlopen(method, url, **extra_kw)\n/usr/local/lib/python3.8/site-packages/urllib3/poolmanager.py:375: in urlopen\n    response = conn.urlopen(method, u.request_uri, **kw)\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:755: in urlopen\n    retries = retries.increment(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = Retry(total=0, connect=None, read=None, redirect=None, status=None)\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\nresponse = None\nerror = NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution')\n_pool = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\n_stacktrace = <traceback object at 0x7f64a05ccdc0>\n\n    def increment(\n        self,\n        method=None,\n        url=None,\n        response=None,\n        error=None,\n        _pool=None,\n        _stacktrace=None,\n    ):\n        \"\"\"Return a new Retry object with incremented retry counters.\n    \n        :param response: A response object, or None, if the server did not\n            return a response.\n        :type response: :class:`~urllib3.response.HTTPResponse`\n        :param Exception error: An error encountered during the request, or\n            None if the response was received successfully.\n    \n        :return: A new ``Retry`` object.\n        \"\"\"\n        if self.total is False and error:\n            # Disabled, indicate to re-raise the error.\n            raise six.reraise(type(error), error, _stacktrace)\n    \n        total = self.total\n        if total is not None:\n            total -= 1\n    \n        connect = self.connect\n        read = self.read\n        redirect = self.redirect\n        status_count = self.status\n        other = self.other\n        cause = \"unknown\"\n        status = None\n        redirect_location = None\n    \n        if error and self._is_connection_error(error):\n            # Connect retry?\n            if connect is False:\n                raise six.reraise(type(error), error, _stacktrace)\n            elif connect is not None:\n                connect -= 1\n    \n        elif error and self._is_read_error(error):\n            # Read retry?\n            if read is False or not self._is_method_retryable(method):\n                raise six.reraise(type(error), error, _stacktrace)\n            elif read is not None:\n                read -= 1\n    \n        elif error:\n            # Other retry?\n            if other is not None:\n                other -= 1\n    \n        elif response and response.get_redirect_location():\n            # Redirect retry?\n            if redirect is not None:\n                redirect -= 1\n            cause = \"too many redirects\"\n            redirect_location = response.get_redirect_location()\n            status = response.status\n    \n        else:\n            # Incrementing because of a server error like a 500 in\n            # status_forcelist and the given method is in the allowed_methods\n            cause = ResponseError.GENERIC_ERROR\n            if response and response.status:\n                if status_count is not None:\n                    status_count -= 1\n                cause = ResponseError.SPECIFIC_ERROR.format(status_code=response.status)\n                status = response.status\n    \n        history = self.history + (\n            RequestHistory(method, url, error, status, redirect_location),\n        )\n    \n        new_retry = self.new(\n            total=total,\n            connect=connect,\n            read=read,\n            redirect=redirect,\n            status=status_count,\n            other=other,\n            history=history,\n        )\n    \n        if new_retry.is_exhausted():\n>           raise MaxRetryError(_pool, url, error or ResponseError(cause))\nE           urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='tip.perfectomobile.com', port=443): Max retries exceeded with url: /nexperience/perfectomobile/wd/hub/session (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))\n\n/usr/local/lib/python3.8/site-packages/urllib3/util/retry.py:574: MaxRetryError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "get_sdk_version",
+    "time" : {
+      "start" : 1637358848510,
+      "stop" : 1637358848551,
+      "duration" : 41
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags",
+    "time" : {
+      "start" : 1637358851867,
+      "stop" : 1637358851867,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_perfectoMobile_iOS",
+    "time" : {
+      "start" : 1637362755829,
+      "stop" : 1637362760835,
+      "duration" : 5006
+    },
+    "status" : "broken",
+    "statusMessage" : "urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='tip.perfectomobile.com', port=443): Max retries exceeded with url: /nexperience/perfectomobile/wd/hub/session (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/pluggy/callers.py\", line 187, in _multicall\n    res = hook_impl.function(*args)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 1126, in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 925, in call_fixture_func\n    fixture_result = next(generator)\n  File \"/wlan-testing/tests/e2e/interOp/conftest.py\", line 571, in setup_perfectoMobile_iOS\n    driver = webdriver.Remote(\n  File \"/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py\", line 273, in __init__\n    super().__init__(\n  File \"/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py\", line 266, in __init__\n    self.start_session(capabilities, browser_profile)\n  File \"/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py\", line 364, in start_session\n    response = self.execute(RemoteCommand.NEW_SESSION, parameters)\n  File \"/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py\", line 416, in execute\n    response = self.command_executor.execute(driver_command, params)\n  File \"/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py\", line 398, in execute\n    return self._request(command_info[0], url, body=data)\n  File \"/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py\", line 420, in _request\n    resp = self._conn.request(method, url, body=body, headers=headers)\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/request.py\", line 78, in request\n    return self.request_encode_body(\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/request.py\", line 170, in request_encode_body\n    return self.urlopen(method, url, **extra_kw)\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/poolmanager.py\", line 375, in urlopen\n    response = conn.urlopen(method, u.request_uri, **kw)\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py\", line 783, in urlopen\n    return self.urlopen(\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py\", line 783, in urlopen\n    return self.urlopen(\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py\", line 783, in urlopen\n    return self.urlopen(\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py\", line 755, in urlopen\n    retries = retries.increment(\n  File \"/usr/local/lib/python3.8/site-packages/urllib3/util/retry.py\", line 574, in increment\n    raise MaxRetryError(_pool, url, error or ResponseError(cause))\n",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1637358848326,
+      "stop" : 1637358848326,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles",
+    "time" : {
+      "start" : 1637362619309,
+      "stop" : 1637362731861,
+      "duration" : 112552
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "e09e87879fed086",
+      "name" : "ucentral_config: ",
+      "source" : "e09e87879fed086.json",
+      "type" : "application/json",
+      "size" : 2136
+    }, {
+      "uid" : "c45a705cf4256112",
+      "name" : "/configure response: 200",
+      "source" : "c45a705cf4256112.json",
+      "type" : "application/json",
+      "size" : 2651
+    }, {
+      "uid" : "1bae55e0ad9c6275",
+      "name" : "Config Sent from API: ",
+      "source" : "1bae55e0ad9c6275.json",
+      "type" : "application/json",
+      "size" : 2135
+    }, {
+      "uid" : "8edd0c98881a9d0",
+      "name" : "Latest Config Received by AP: ",
+      "source" : "8edd0c98881a9d0.json",
+      "type" : "application/json",
+      "size" : 2014
+    }, {
+      "uid" : "f749ac4961006018",
+      "name" : "Time Took to apply Config: 19.41278648376465",
+      "source" : "f749ac4961006018.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    }, {
+      "uid" : "7e0df3a989c8188e",
+      "name" : "Success : Active Config in AP: ",
+      "source" : "7e0df3a989c8188e.attach",
+      "type" : "text/plain",
+      "size" : 2145
+    }, {
+      "uid" : "3cdb9751b9faa587",
+      "name" : "iwinfo: ",
+      "source" : "3cdb9751b9faa587.attach",
+      "type" : "text/plain",
+      "size" : 3396
+    }, {
+      "uid" : "739cc3376c434bf4",
+      "name" : "AP Log: ",
+      "source" : "739cc3376c434bf4.attach",
+      "type" : "text/plain",
+      "size" : 38077
+    }, {
+      "uid" : "eac0843971ce29e1",
+      "name" : "wifi status",
+      "source" : "eac0843971ce29e1.attach",
+      "type" : "text/plain",
+      "size" : 3796
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 9,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_vif_state",
+    "time" : {
+      "start" : 1637362731861,
+      "stop" : 1637362731862,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile",
+    "time" : {
+      "start" : 1637358851867,
+      "stop" : 1637358851867,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller",
+    "time" : {
+      "start" : 1637358851866,
+      "stop" : 1637358851866,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_accounting_info",
+    "time" : {
+      "start" : 1637358851871,
+      "stop" : 1637358851871,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "create_lanforge_chamberview_dut",
+    "time" : {
+      "start" : 1637358851870,
+      "stop" : 1637358851870,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_equipment_ref",
+    "time" : {
+      "start" : 1637358851866,
+      "stop" : 1637358851866,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools",
+    "time" : {
+      "start" : 1637358851869,
+      "stop" : 1637358851870,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1637358848552,
+      "stop" : 1637358848552,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info",
+    "time" : {
+      "start" : 1637358848326,
+      "stop" : 1637358848326,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1637362752579,
+      "stop" : 1637362755829,
+      "duration" : 3250
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "skip_lf",
+    "time" : {
+      "start" : 1637358851867,
+      "stop" : 1637358851867,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_env_properties",
+    "time" : {
+      "start" : 1637358848552,
+      "stop" : 1637358851866,
+      "duration" : 3314
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1637358848326,
+      "stop" : 1637358848326,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1637358848327,
+      "stop" : 1637358848510,
+      "duration" : 183
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers",
+    "time" : {
+      "start" : 1637358851867,
+      "stop" : 1637358851869,
+      "duration" : 2
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_APToMobileDevice_data",
+    "time" : {
+      "start" : 1637362755829,
+      "stop" : 1637362755829,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1637358848325,
+      "stop" : 1637358848325,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "broken",
+    "statusMessage" : "urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='tip.perfectomobile.com', port=443): Max retries exceeded with url: /nexperience/perfectomobile/wd/hub/session (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))",
+    "statusTrace" : "self = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _new_conn(self):\n        \"\"\"Establish a socket connection and set nodelay settings on it.\n    \n        :return: New socket connection.\n        \"\"\"\n        extra_kw = {}\n        if self.source_address:\n            extra_kw[\"source_address\"] = self.source_address\n    \n        if self.socket_options:\n            extra_kw[\"socket_options\"] = self.socket_options\n    \n        try:\n>           conn = connection.create_connection(\n                (self._dns_host, self.port), self.timeout, **extra_kw\n            )\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:174: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\naddress = ('tip.perfectomobile.com', 443)\ntimeout = <object object at 0x7f64b2646a60>, source_address = None\nsocket_options = [(6, 1, 1)]\n\n    def create_connection(\n        address,\n        timeout=socket._GLOBAL_DEFAULT_TIMEOUT,\n        source_address=None,\n        socket_options=None,\n    ):\n        \"\"\"Connect to *address* and return the socket object.\n    \n        Convenience function.  Connect to *address* (a 2-tuple ``(host,\n        port)``) and return the socket object.  Passing the optional\n        *timeout* parameter will set the timeout on the socket instance\n        before attempting to connect.  If no *timeout* is supplied, the\n        global default timeout setting returned by :func:`socket.getdefaulttimeout`\n        is used.  If *source_address* is set it must be a tuple of (host, port)\n        for the socket to bind as a source address before making the connection.\n        An host of '' or port 0 tells the OS to use the default.\n        \"\"\"\n    \n        host, port = address\n        if host.startswith(\"[\"):\n            host = host.strip(\"[]\")\n        err = None\n    \n        # Using the value from allowed_gai_family() in the context of getaddrinfo lets\n        # us select whether to work with IPv4 DNS records, IPv6 records, or both.\n        # The original create_connection function always returns all records.\n        family = allowed_gai_family()\n    \n        try:\n            host.encode(\"idna\")\n        except UnicodeError:\n            return six.raise_from(\n                LocationParseError(u\"'%s', label empty or too long\" % host), None\n            )\n    \n>       for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):\n\n/usr/local/lib/python3.8/site-packages/urllib3/util/connection.py:73: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nhost = 'tip.perfectomobile.com', port = 443, family = <AddressFamily.AF_INET: 2>\ntype = <SocketKind.SOCK_STREAM: 1>, proto = 0, flags = 0\n\n    def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):\n        \"\"\"Resolve host and port into list of address info entries.\n    \n        Translate the host/port argument into a sequence of 5-tuples that contain\n        all the necessary arguments for creating a socket connected to that service.\n        host is a domain name, a string representation of an IPv4/v6 address or\n        None. port is a string service name such as 'http', a numeric port number or\n        None. By passing None as the value of host and port, you can pass NULL to\n        the underlying C API.\n    \n        The family, type and proto arguments can be optionally specified in order to\n        narrow the list of addresses returned. Passing zero as a value for each of\n        these arguments selects the full range of results.\n        \"\"\"\n        # We override this function since we want to translate the numeric family\n        # and socket type values to enum constants.\n        addrlist = []\n>       for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\nE       socket.gaierror: [Errno -3] Temporary failure in name resolution\n\n/usr/local/lib/python3.8/socket.py:918: gaierror\n\nDuring handling of the above exception, another exception occurred:\n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\nbody = '{\"capabilities\": {\"alwaysMatch\": {\"platformName\": \"iOS\", \"appium:model\": \"iPhone-11\", \"browserName\": \"safari\", \"appiu...IjjCIsj8NJm1p66dCsLJI5DBEmks\", \"useAppiumForWeb\": \"false\", \"autoAcceptAlerts\": \"true\", \"useAppiumForHybrid\": \"false\"}}'\nheaders = {'Accept': 'application/json', 'Connection': 'keep-alive', 'Content-Type': 'application/json;charset=UTF-8', 'User-Agent': 'appium/python 2.0.0 (selenium/4.0.0 (python linux))', ...}\nretries = Retry(total=0, connect=None, read=None, redirect=None, status=None)\nredirect = False, assert_same_host = False\ntimeout = <object object at 0x7f64b167d940>, pool_timeout = None\nrelease_conn = True, chunked = False, body_pos = None\nresponse_kw = {'request_url': 'https://tip.perfectomobile.com/nexperience/perfectomobile/wd/hub/session'}\nparsed_url = Url(scheme=None, auth=None, host=None, port=None, path='/nexperience/perfectomobile/wd/hub/session', query=None, fragment=None)\ndestination_scheme = None, conn = None, release_this_conn = True\nhttp_tunnel_required = False, err = None, clean_exit = False\n\n    def urlopen(\n        self,\n        method,\n        url,\n        body=None,\n        headers=None,\n        retries=None,\n        redirect=True,\n        assert_same_host=True,\n        timeout=_Default,\n        pool_timeout=None,\n        release_conn=None,\n        chunked=False,\n        body_pos=None,\n        **response_kw\n    ):\n        \"\"\"\n        Get a connection from the pool and perform an HTTP request. This is the\n        lowest level call for making a request, so you'll need to specify all\n        the raw details.\n    \n        .. note::\n    \n           More commonly, it's appropriate to use a convenience method provided\n           by :class:`.RequestMethods`, such as :meth:`request`.\n    \n        .. note::\n    \n           `release_conn` will only behave as expected if\n           `preload_content=False` because we want to make\n           `preload_content=False` the default behaviour someday soon without\n           breaking backwards compatibility.\n    \n        :param method:\n            HTTP request method (such as GET, POST, PUT, etc.)\n    \n        :param url:\n            The URL to perform the request on.\n    \n        :param body:\n            Data to send in the request body, either :class:`str`, :class:`bytes`,\n            an iterable of :class:`str`/:class:`bytes`, or a file-like object.\n    \n        :param headers:\n            Dictionary of custom headers to send, such as User-Agent,\n            If-None-Match, etc. If None, pool headers are used. If provided,\n            these headers completely replace any pool-specific headers.\n    \n        :param retries:\n            Configure the number of retries to allow before raising a\n            :class:`~urllib3.exceptions.MaxRetryError` exception.\n    \n            Pass ``None`` to retry until you receive a response. Pass a\n            :class:`~urllib3.util.retry.Retry` object for fine-grained control\n            over different types of retries.\n            Pass an integer number to retry connection errors that many times,\n            but no other types of errors. Pass zero to never retry.\n    \n            If ``False``, then retries are disabled and any exception is raised\n            immediately. Also, instead of raising a MaxRetryError on redirects,\n            the redirect response will be returned.\n    \n        :type retries: :class:`~urllib3.util.retry.Retry`, False, or an int.\n    \n        :param redirect:\n            If True, automatically handle redirects (status codes 301, 302,\n            303, 307, 308). Each redirect counts as a retry. Disabling retries\n            will disable redirect, too.\n    \n        :param assert_same_host:\n            If ``True``, will make sure that the host of the pool requests is\n            consistent else will raise HostChangedError. When ``False``, you can\n            use the pool on an HTTP proxy and request foreign hosts.\n    \n        :param timeout:\n            If specified, overrides the default timeout for this one\n            request. It may be a float (in seconds) or an instance of\n            :class:`urllib3.util.Timeout`.\n    \n        :param pool_timeout:\n            If set and the pool is set to block=True, then this method will\n            block for ``pool_timeout`` seconds and raise EmptyPoolError if no\n            connection is available within the time period.\n    \n        :param release_conn:\n            If False, then the urlopen call will not release the connection\n            back into the pool once a response is received (but will release if\n            you read the entire contents of the response such as when\n            `preload_content=True`). This is useful if you're not preloading\n            the response's content immediately. You will need to call\n            ``r.release_conn()`` on the response ``r`` to return the connection\n            back into the pool. If None, it takes the value of\n            ``response_kw.get('preload_content', True)``.\n    \n        :param chunked:\n            If True, urllib3 will send the body using chunked transfer\n            encoding. Otherwise, urllib3 will send the body using the standard\n            content-length form. Defaults to False.\n    \n        :param int body_pos:\n            Position to seek to in file-like body in the event of a retry or\n            redirect. Typically this won't need to be set because urllib3 will\n            auto-populate the value when needed.\n    \n        :param \\\\**response_kw:\n            Additional parameters are passed to\n            :meth:`urllib3.response.HTTPResponse.from_httplib`\n        \"\"\"\n    \n        parsed_url = parse_url(url)\n        destination_scheme = parsed_url.scheme\n    \n        if headers is None:\n            headers = self.headers\n    \n        if not isinstance(retries, Retry):\n            retries = Retry.from_int(retries, redirect=redirect, default=self.retries)\n    \n        if release_conn is None:\n            release_conn = response_kw.get(\"preload_content\", True)\n    \n        # Check host\n        if assert_same_host and not self.is_same_host(url):\n            raise HostChangedError(self, url, retries)\n    \n        # Ensure that the URL we're connecting to is properly encoded\n        if url.startswith(\"/\"):\n            url = six.ensure_str(_encode_target(url))\n        else:\n            url = six.ensure_str(parsed_url.url)\n    \n        conn = None\n    \n        # Track whether `conn` needs to be released before\n        # returning/raising/recursing. Update this variable if necessary, and\n        # leave `release_conn` constant throughout the function. That way, if\n        # the function recurses, the original value of `release_conn` will be\n        # passed down into the recursive call, and its value will be respected.\n        #\n        # See issue #651 [1] for details.\n        #\n        # [1] <https://github.com/urllib3/urllib3/issues/651>\n        release_this_conn = release_conn\n    \n        http_tunnel_required = connection_requires_http_tunnel(\n            self.proxy, self.proxy_config, destination_scheme\n        )\n    \n        # Merge the proxy headers. Only done when not using HTTP CONNECT. We\n        # have to copy the headers dict so we can safely change it without those\n        # changes being reflected in anyone else's copy.\n        if not http_tunnel_required:\n            headers = headers.copy()\n            headers.update(self.proxy_headers)\n    \n        # Must keep the exception bound to a separate variable or else Python 3\n        # complains about UnboundLocalError.\n        err = None\n    \n        # Keep track of whether we cleanly exited the except block. This\n        # ensures we do proper cleanup in finally.\n        clean_exit = False\n    \n        # Rewind body position, if needed. Record current position\n        # for future rewinds in the event of a redirect/retry.\n        body_pos = set_file_position(body, body_pos)\n    \n        try:\n            # Request a connection from the queue.\n            timeout_obj = self._get_timeout(timeout)\n            conn = self._get_conn(timeout=pool_timeout)\n    \n            conn.timeout = timeout_obj.connect_timeout\n    \n            is_new_proxy_conn = self.proxy is not None and not getattr(\n                conn, \"sock\", None\n            )\n            if is_new_proxy_conn and http_tunnel_required:\n                self._prepare_proxy(conn)\n    \n            # Make the request on the httplib connection object.\n>           httplib_response = self._make_request(\n                conn,\n                method,\n                url,\n                timeout=timeout_obj,\n                body=body,\n                headers=headers,\n                chunked=chunked,\n            )\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:699: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nconn = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\ntimeout = Timeout(connect=<object object at 0x7f64b2646a60>, read=<object object at 0x7f64b2646a60>, total=None)\nchunked = False\nhttplib_request_kw = {'body': '{\"capabilities\": {\"alwaysMatch\": {\"platformName\": \"iOS\", \"appium:model\": \"iPhone-11\", \"browserName\": \"safari...ent-Type': 'application/json;charset=UTF-8', 'User-Agent': 'appium/python 2.0.0 (selenium/4.0.0 (python linux))', ...}}\ntimeout_obj = Timeout(connect=<object object at 0x7f64b2646a60>, read=<object object at 0x7f64b2646a60>, total=None)\n\n    def _make_request(\n        self, conn, method, url, timeout=_Default, chunked=False, **httplib_request_kw\n    ):\n        \"\"\"\n        Perform a request on a given urllib connection object taken from our\n        pool.\n    \n        :param conn:\n            a connection from one of our connection pools\n    \n        :param timeout:\n            Socket timeout in seconds for the request. This can be a\n            float or integer, which will set the same timeout value for\n            the socket connect and the socket read, or an instance of\n            :class:`urllib3.util.Timeout`, which gives you more fine-grained\n            control over your timeouts.\n        \"\"\"\n        self.num_requests += 1\n    \n        timeout_obj = self._get_timeout(timeout)\n        timeout_obj.start_connect()\n        conn.timeout = timeout_obj.connect_timeout\n    \n        # Trigger any extra validation we need to do.\n        try:\n>           self._validate_conn(conn)\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:382: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\nconn = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _validate_conn(self, conn):\n        \"\"\"\n        Called right before a request is made, after the socket is created.\n        \"\"\"\n        super(HTTPSConnectionPool, self)._validate_conn(conn)\n    \n        # Force connect early to allow us to validate the connection.\n        if not getattr(conn, \"sock\", None):  # AppEngine might not have  `.sock`\n>           conn.connect()\n\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:1010: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def connect(self):\n        # Add certificate verification\n>       conn = self._new_conn()\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:358: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>\n\n    def _new_conn(self):\n        \"\"\"Establish a socket connection and set nodelay settings on it.\n    \n        :return: New socket connection.\n        \"\"\"\n        extra_kw = {}\n        if self.source_address:\n            extra_kw[\"source_address\"] = self.source_address\n    \n        if self.socket_options:\n            extra_kw[\"socket_options\"] = self.socket_options\n    \n        try:\n            conn = connection.create_connection(\n                (self._dns_host, self.port), self.timeout, **extra_kw\n            )\n    \n        except SocketTimeout:\n            raise ConnectTimeoutError(\n                self,\n                \"Connection to %s timed out. (connect timeout=%s)\"\n                % (self.host, self.timeout),\n            )\n    \n        except SocketError as e:\n>           raise NewConnectionError(\n                self, \"Failed to establish a new connection: %s\" % e\n            )\nE           urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution\n\n/usr/local/lib/python3.8/site-packages/urllib3/connection.py:186: NewConnectionError\n\nDuring handling of the above exception, another exception occurred:\n\nrequest = <SubRequest 'setup_perfectoMobile_iOS' for <Function test_ClientConnect_2g_wpa3_personal_Nat[setup_profiles0]>>\n\n    @pytest.fixture(scope=\"function\")\n    def setup_perfectoMobile_iOS(request):\n        from appium import webdriver\n        driver = None\n        reporting_client = None\n    \n        warnings.simplefilter(\"ignore\", ResourceWarning)\n        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)\n    \n        capabilities = {\n            'platformName': request.config.getini(\"platformName-iOS\"),\n            'model': request.config.getini(\"model-iOS\"),\n            'browserName': 'safari',\n            # 'automationName' : 'Appium',\n            'securityToken': request.config.getini(\"securityToken\"),\n            'useAppiumForWeb': 'false',\n            'autoAcceptAlerts': 'true',\n            # 'bundleId' : request.config.getini(\"bundleId-iOS\"),\n            'useAppiumForHybrid': 'false',\n        }\n    \n>       driver = webdriver.Remote(\n            'https://' + request.config.getini(\"perfectoURL\") + '.perfectomobile.com/nexperience/perfectomobile/wd/hub',\n            capabilities)\n\ne2e/interOp/conftest.py:571: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py:273: in __init__\n    super().__init__(\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py:266: in __init__\n    self.start_session(capabilities, browser_profile)\n/usr/local/lib/python3.8/site-packages/appium/webdriver/webdriver.py:364: in start_session\n    response = self.execute(RemoteCommand.NEW_SESSION, parameters)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py:416: in execute\n    response = self.command_executor.execute(driver_command, params)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py:398: in execute\n    return self._request(command_info[0], url, body=data)\n/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/remote_connection.py:420: in _request\n    resp = self._conn.request(method, url, body=body, headers=headers)\n/usr/local/lib/python3.8/site-packages/urllib3/request.py:78: in request\n    return self.request_encode_body(\n/usr/local/lib/python3.8/site-packages/urllib3/request.py:170: in request_encode_body\n    return self.urlopen(method, url, **extra_kw)\n/usr/local/lib/python3.8/site-packages/urllib3/poolmanager.py:375: in urlopen\n    response = conn.urlopen(method, u.request_uri, **kw)\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:783: in urlopen\n    return self.urlopen(\n/usr/local/lib/python3.8/site-packages/urllib3/connectionpool.py:755: in urlopen\n    retries = retries.increment(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = Retry(total=0, connect=None, read=None, redirect=None, status=None)\nmethod = 'POST', url = '/nexperience/perfectomobile/wd/hub/session'\nresponse = None\nerror = NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution')\n_pool = <urllib3.connectionpool.HTTPSConnectionPool object at 0x7f64a0388190>\n_stacktrace = <traceback object at 0x7f64a05ccdc0>\n\n    def increment(\n        self,\n        method=None,\n        url=None,\n        response=None,\n        error=None,\n        _pool=None,\n        _stacktrace=None,\n    ):\n        \"\"\"Return a new Retry object with incremented retry counters.\n    \n        :param response: A response object, or None, if the server did not\n            return a response.\n        :type response: :class:`~urllib3.response.HTTPResponse`\n        :param Exception error: An error encountered during the request, or\n            None if the response was received successfully.\n    \n        :return: A new ``Retry`` object.\n        \"\"\"\n        if self.total is False and error:\n            # Disabled, indicate to re-raise the error.\n            raise six.reraise(type(error), error, _stacktrace)\n    \n        total = self.total\n        if total is not None:\n            total -= 1\n    \n        connect = self.connect\n        read = self.read\n        redirect = self.redirect\n        status_count = self.status\n        other = self.other\n        cause = \"unknown\"\n        status = None\n        redirect_location = None\n    \n        if error and self._is_connection_error(error):\n            # Connect retry?\n            if connect is False:\n                raise six.reraise(type(error), error, _stacktrace)\n            elif connect is not None:\n                connect -= 1\n    \n        elif error and self._is_read_error(error):\n            # Read retry?\n            if read is False or not self._is_method_retryable(method):\n                raise six.reraise(type(error), error, _stacktrace)\n            elif read is not None:\n                read -= 1\n    \n        elif error:\n            # Other retry?\n            if other is not None:\n                other -= 1\n    \n        elif response and response.get_redirect_location():\n            # Redirect retry?\n            if redirect is not None:\n                redirect -= 1\n            cause = \"too many redirects\"\n            redirect_location = response.get_redirect_location()\n            status = response.status\n    \n        else:\n            # Incrementing because of a server error like a 500 in\n            # status_forcelist and the given method is in the allowed_methods\n            cause = ResponseError.GENERIC_ERROR\n            if response and response.status:\n                if status_count is not None:\n                    status_count -= 1\n                cause = ResponseError.SPECIFIC_ERROR.format(status_code=response.status)\n                status = response.status\n    \n        history = self.history + (\n            RequestHistory(method, url, error, status, redirect_location),\n        )\n    \n        new_retry = self.new(\n            total=total,\n            connect=connect,\n            read=read,\n            redirect=redirect,\n            status=status_count,\n            other=other,\n            history=history,\n        )\n    \n        if new_retry.is_exhausted():\n>           raise MaxRetryError(_pool, url, error or ResponseError(cause))\nE           urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='tip.perfectomobile.com', port=443): Max retries exceeded with url: /nexperience/perfectomobile/wd/hub/session (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a0388cd0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))\n\n/usr/local/lib/python3.8/site-packages/urllib3/util/retry.py:574: MaxRetryError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "bbd2328569a6a0bd",
+      "name" : "log",
+      "source" : "bbd2328569a6a0bd.txt",
+      "type" : "text/plain",
+      "size" : 1052
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "get_sdk_version::0",
+    "time" : {
+      "start" : 1637362893633,
+      "stop" : 1637362893633,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags::0",
+    "time" : {
+      "start" : 1637362893524,
+      "stop" : 1637362893524,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1637362893732,
+      "stop" : 1637362893732,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles::1",
+    "time" : {
+      "start" : 1637362853717,
+      "stop" : 1637362853717,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles::teardown_session",
+    "time" : {
+      "start" : 1637362853717,
+      "stop" : 1637362856730,
+      "duration" : 3013
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "d8fb0c378c233400",
+      "name" : "wifi status",
+      "source" : "d8fb0c378c233400.attach",
+      "type" : "text/plain",
+      "size" : 3796
+    }, {
+      "uid" : "f6d6f2d941c6c6ba",
+      "name" : "iwinfo: ",
+      "source" : "f6d6f2d941c6c6ba.attach",
+      "type" : "text/plain",
+      "size" : 3396
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_vif_state::0",
+    "time" : {
+      "start" : 1637362853717,
+      "stop" : 1637362853717,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile::0",
+    "time" : {
+      "start" : 1637362893527,
+      "stop" : 1637362893527,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller::1",
+    "time" : {
+      "start" : 1637362893616,
+      "stop" : 1637362893616,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller::disconnect",
+    "time" : {
+      "start" : 1637362893617,
+      "stop" : 1637362893619,
+      "duration" : 2
+    },
+    "status" : "broken",
+    "statusMessage" : "requests.exceptions.ConnectionError: HTTPSConnectionPool(host='sec-qa01.cicd.lab.wlan.tip.build', port=16001): Max retries exceeded with url: /api/v1/oauth2/7dd7f3331d08726ee3508bb9ac34b863896c329afe05715fa906f27d1df82c39 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f64a096e460>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/allure_commons/_allure.py\", line 200, in __call__\n    return self._fixture_function(*args, **kwargs)\n  File \"/wlan-testing/tests/fixtures_2x.py\", line 59, in disconnect\n    self.controller_obj.logout()\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 126, in logout\n    resp = requests.delete(uri, headers=self.make_headers(), verify=False, timeout=100)\n  File \"/usr/local/lib/python3.8/site-packages/requests/api.py\", line 159, in delete\n    return request('delete', url, **kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/requests/api.py\", line 61, in request\n    return session.request(method=method, url=url, **kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/requests/sessions.py\", line 542, in request\n    resp = self.send(prep, **send_kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/requests/sessions.py\", line 655, in send\n    r = adapter.send(request, **kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/requests/adapters.py\", line 516, in send\n    raise ConnectionError(e, request=request)\n",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "radius_accounting_info::0",
+    "time" : {
+      "start" : 1637362893427,
+      "stop" : 1637362893427,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_equipment_ref::0",
+    "time" : {
+      "start" : 1637362893612,
+      "stop" : 1637362893612,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools::0",
+    "time" : {
+      "start" : 1637362893516,
+      "stop" : 1637362893516,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1637362893630,
+      "stop" : 1637362893630,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info::0",
+    "time" : {
+      "start" : 1637362893429,
+      "stop" : 1637362893429,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1637362761724,
+      "stop" : 1637362772547,
+      "duration" : 10823
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "27782db2ca88c0d8",
+      "name" : "logread",
+      "source" : "27782db2ca88c0d8.attach",
+      "type" : "text/plain",
+      "size" : 136
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "skip_lf::0",
+    "time" : {
+      "start" : 1637362893609,
+      "stop" : 1637362893609,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1637362893814,
+      "stop" : 1637362893815,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1637362893716,
+      "stop" : 1637362893716,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers::0",
+    "time" : {
+      "start" : 1637362893519,
+      "stop" : 1637362893519,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_APToMobileDevice_data::0",
+    "time" : {
+      "start" : 1637362761723,
+      "stop" : 1637362761723,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1637362893817,
+      "stop" : 1637362893817,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "suite",
+    "value" : "interop sanity"
+  }, {
+    "name" : "subSuite",
+    "value" : "Nat Mode Client Connect : Suite-B"
+  }, {
+    "name" : "feature",
+    "value" : "NAT MODE CLIENT CONNECT"
+  }, {
+    "name" : "tag",
+    "value" : "interop_ios"
+  }, {
+    "name" : "tag",
+    "value" : "wpa3_personal"
+  }, {
+    "name" : "tag",
+    "value" : "@pytest.mark.usefixtures('setup_profiles')"
+  }, {
+    "name" : "tag",
+    "value" : "client_connect"
+  }, {
+    "name" : "tag",
+    "value" : "interop_uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "interop"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "tag",
+    "value" : "ios"
+  }, {
+    "name" : "tag",
+    "value" : "InteropsuiteB"
+  }, {
+    "name" : "tag",
+    "value" : "nat"
+  }, {
+    "name" : "tag",
+    "value" : "twog"
+  }, {
+    "name" : "parentSuite",
+    "value" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.iOS"
+  }, {
+    "name" : "host",
+    "value" : "interop-ci-396-ios-cxg6f"
+  }, {
+    "name" : "thread",
+    "value" : "7-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.iOS.test_general_security_modes"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "setup_profiles",
+    "value" : "{'mode': 'NAT', 'ssid_modes': {'wpa3_personal': [{'ssid_name': 'ssid_wpa3_p_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'sae'}, {'ssid_name': 'ssid_wpa3_p_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'sae'}], 'wpa3_personal_mixed': [{'ssid_name': 'ssid_wpa3_p_m_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'sae-mixed'}, {'ssid_name': 'ssid_wpa3_p_m_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'sae-mixed'}], 'wpa_wpa2_personal_mixed': [{'ssid_name': 'ssid_wpa_wpa2_p_m_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk-mixed'}, {'ssid_name': 'ssid_wpa_wpa2_p_m_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk-mixed'}]}, 'rf': {}, 'radius': False}"
+  } ],
+  "links" : [ {
+    "name" : "WIFI-4532",
+    "url" : "https://telecominfraproject.atlassian.net/browse/WIFI-4532",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 10,
+        "broken" : 7,
+        "skipped" : 0,
+        "passed" : 15,
+        "unknown" : 0,
+        "total" : 32
+      },
+      "items" : [ {
+        "uid" : "86f59b7dff8b2fa7",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637276530487,
+          "stop" : 1637276544747,
+          "duration" : 14260
+        }
+      }, {
+        "uid" : "af37dcce1eae0625",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636922766267,
+          "stop" : 1636922766267,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "f3274378dd0f38f4",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636836322436,
+          "stop" : 1636836322436,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "a3be696d28ca6809",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636749976439,
+          "stop" : 1636749976439,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "4bc0d4c992581909",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636663558151,
+          "stop" : 1636663558151,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "7be10915fa6c8f47",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636577130416,
+          "stop" : 1636577130416,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "9f2e5479458307cf",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1636499209127,
+          "stop" : 1636499223474,
+          "duration" : 14347
+        }
+      }, {
+        "uid" : "6de0026aafa57178",
+        "status" : "passed",
+        "time" : {
+          "start" : 1636337734886,
+          "stop" : 1636337849315,
+          "duration" : 114429
+        }
+      }, {
+        "uid" : "fb3718fa7498f801",
+        "status" : "passed",
+        "time" : {
+          "start" : 1636251010553,
+          "stop" : 1636251125721,
+          "duration" : 115168
+        }
+      }, {
+        "uid" : "639e4d88dd28e557",
+        "status" : "passed",
+        "time" : {
+          "start" : 1636164648601,
+          "stop" : 1636164761307,
+          "duration" : 112706
+        }
+      }, {
+        "uid" : "b28c176760e10459",
+        "status" : "passed",
+        "time" : {
+          "start" : 1636078272871,
+          "stop" : 1636078381622,
+          "duration" : 108751
+        }
+      }, {
+        "uid" : "625025da5df97202",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635992139312,
+          "stop" : 1635992255476,
+          "duration" : 116164
+        }
+      }, {
+        "uid" : "3c522c6a3a9c7504",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635905113678,
+          "stop" : 1635905216448,
+          "duration" : 102770
+        }
+      }, {
+        "uid" : "bd6519441a8db992",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635818172848,
+          "stop" : 1635818273281,
+          "duration" : 100433
+        }
+      }, {
+        "uid" : "f700a54fa40813b3",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635731437272,
+          "stop" : 1635731539634,
+          "duration" : 102362
+        }
+      }, {
+        "uid" : "4582bd50091857bd",
+        "status" : "failed",
+        "statusDetails" : "Failed: AP latest and active are different",
+        "time" : {
+          "start" : 1635637805729,
+          "stop" : 1635637805729,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "95058fc722e128be",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635580241766,
+          "stop" : 1635580343196,
+          "duration" : 101430
+        }
+      }, {
+        "uid" : "30b119a9dd838062",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1635554515435,
+          "stop" : 1635554595274,
+          "duration" : 79839
+        }
+      }, {
+        "uid" : "f4f8a16870ea067d",
+        "status" : "failed",
+        "statusDetails" : "Failed: AP latest and active are different",
+        "time" : {
+          "start" : 1635466408184,
+          "stop" : 1635466408184,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "8587d07905b5d58d",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635385666906,
+          "stop" : 1635385809794,
+          "duration" : 142888
+        }
+      } ]
+    },
+    "tags" : [ "nat", "@pytest.mark.usefixtures('setup_profiles')", "InteropsuiteB", "interop_ios", "interop", "sanity", "interop_uc_sanity", "wpa3_personal", "ios", "twog", "client_connect" ]
+  },
+  "source" : "89f72922f55d6ebd.json",
+  "parameterValues" : [ "{'mode': 'NAT', 'ssid_modes': {'wpa3_personal': [{'ssid_name': 'ssid_wpa3_p_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'sae'}, {'ssid_name': 'ssid_wpa3_p_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'sae'}], 'wpa3_personal_mixed': [{'ssid_name': 'ssid_wpa3_p_m_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'sae-mixed'}, {'ssid_name': 'ssid_wpa3_p_m_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'sae-mixed'}], 'wpa_wpa2_personal_mixed': [{'ssid_name': 'ssid_wpa_wpa2_p_m_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk-mixed'}, {'ssid_name': 'ssid_wpa_wpa2_p_m_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk-mixed'}]}, 'rf': {}, 'radius': False}" ]
+}
