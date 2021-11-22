@@ -1,0 +1,473 @@
+{
+  "uid" : "48053641278164af",
+  "name" : "test_firmware_upgrade_request",
+  "fullName" : "test_connectivity.TestFMS#test_firmware_upgrade_request",
+  "historyId" : "12d337a2c9ca27419cbc831bf70f6bf7",
+  "time" : {
+    "start" : 1637584592608,
+    "stop" : 1637584592608,
+    "duration" : 0
+  },
+  "status" : "broken",
+  "statusMessage" : "IndexError: list index out of range",
+  "statusTrace" : "fixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7fb09e75fe80>\nget_apnos = <class 'apnos.apnos.APNOS'>\nget_configuration = {'access_point': [{'ip': '10.28.3.103', 'jumphost': True, 'jumphost_tty': '/dev/ttyAP5', 'mode': 'wifi6', ...}], 'cont...tation-Name': 'wlan0', '5G-Radio': ['1.1.wiphy1', '1.1.wiphy3'], '5G-Station-Name': 'wlan0', ...}, 'name': 'lanforge'}}\n\n    @pytest.fixture(scope=\"session\")\n    def firmware_upgrade(fixtures_ver, get_apnos, get_configuration):\n>       upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n\nconftest.py:655: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <fixtures_2x.Fixtures_2x object at 0x7fb09e75fe80>\nget_apnos = <class 'apnos.apnos.APNOS'>\nget_configuration = {'access_point': [{'ip': '10.28.3.103', 'jumphost': True, 'jumphost_tty': '/dev/ttyAP5', 'mode': 'wifi6', ...}], 'cont...tation-Name': 'wlan0', '5G-Radio': ['1.1.wiphy1', '1.1.wiphy3'], '5G-Station-Name': 'wlan0', ...}, 'name': 'lanforge'}}\nrequest = ''\n\n    def setup_firmware(self, get_apnos, get_configuration, request=\"\"):\n        # Query AP Firmware\n        upgrade_status = []\n        for ap in get_configuration['access_point']:\n    \n            ap_ssh = get_apnos(ap, pwd=\"../libs/apnos/\", sdk=\"2.x\")\n            # If specified as URL\n            try:\n                response = requests.get(ap['version'])\n                print(\"URL is valid and exists on the internet\")\n                allure.attach(name=\"firmware url: \", body=str(ap['version']))\n                target_revision_commit = ap['version'].split(\"-\")[-2]\n                ap_version = ap_ssh.get_ap_version_ucentral()\n                current_version_commit = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                if target_revision_commit in current_version_commit:\n                    continue\n                self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(ap['version']))\n    \n                items = list(range(0, 300))\n                l = len(items)\n                ap_version = ap_ssh.get_ap_version_ucentral()\n                current_version_commit = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                if target_revision_commit in current_version_commit:\n                    upgrade_status.append([ap['serial'], target_revision_commit, current_version_commit])\n                    print(\"Firmware Upgraded to :\", ap_version)\n                else:\n                    print(\"firmware upgraded failed: \", target_revision)\n                    upgrade_status.append([ap['serial'], target_revision_commit, current_version_commit])\n                break\n            except Exception as e:\n                print(\"URL does not exist on Internet\")\n            # else Specified as \"branch-commit_id\" / \"branch-latest\"\n            firmware_url = \"\"\n            ap_version = ap_ssh.get_ap_version_ucentral()\n            response = self.fw_client.get_latest_fw(model=ap[\"model\"])\n            # if the target version specified is \"branch-latest\"\n            if ap['version'].split('-')[1] == \"latest\":\n                # get the latest branch\n                firmware_list = self.fw_client.get_firmwares(model=ap['model'], branch=\"\", commit_id='')\n                firmware_list.reverse()\n    \n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1].__contains__('v2.'):\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware))\n                            target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\n    \n                            # check the current AP Revision before upgrade\n                            ap_version = ap_ssh.get_ap_version_ucentral()\n                            current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                            # print and report the firmware versions before upgrade\n                            allure.attach(name=\"Before Firmware Upgrade Request: \",\n                                          body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                            print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n    \n                            # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                            if current_version == target_revision:\n                                upgrade_status.append([ap['serial'], target_revision, current_version, 'skip'])\n                                print(\"Skipping Upgrade! AP is already in target version\")\n                                allure.attach(name=\"Skipping Upgrade because AP is already in the target Version\",\n                                              body=\"\")\n                                break\n    \n                            self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(firmware['uri']))\n                            # wait for 300 seconds after firmware upgrade\n                            print(\"waiting for 300 Sec for Firmware Upgrade\")\n                            time.sleep(300)\n    \n                            # check the current AP Revision again\n                            ap_version = ap_ssh.get_ap_version_ucentral()\n                            current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                            # print and report the Firmware versions after upgrade\n                            allure.attach(name=\"After Firmware Upgrade Request: \",\n                                          body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                            print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n                            if current_version == target_revision:\n                                upgrade_status.append([ap['serial'], target_revision, current_version])\n                                print(\"firmware upgraded successfully: \", target_revision)\n                            else:\n                                upgrade_status.append([ap['serial'], target_revision, current_version])\n                                print(\"firmware upgraded failed: \", target_revision)\n                            break\n                    if firmware['image'].split(\"-\")[-2] == ap['version'].split('-')[0]:\n                        print(\"Target Firmware: \\n\", firmware)\n                        allure.attach(name=\"Target firmware : \", body=str(firmware))\n    \n                        target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\n    \n                        # check the current AP Revision before upgrade\n                        ap_version = ap_ssh.get_ap_version_ucentral()\n>                       current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\nE                       IndexError: list index out of range\n\nfixtures_2x.py:155: IndexError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1637584199302,
+      "stop" : 1637584199303,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1637584724185,
+      "stop" : 1637584790256,
+      "duration" : 66071
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1637584199302,
+      "stop" : 1637584199302,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1637584199659,
+      "stop" : 1637584199659,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1637584199303,
+      "stop" : 1637584199303,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "firmware_upgrade",
+    "time" : {
+      "start" : 1637584592609,
+      "stop" : 1637584722983,
+      "duration" : 130374
+    },
+    "status" : "broken",
+    "statusMessage" : "IndexError: list index out of range\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/pluggy/callers.py\", line 187, in _multicall\n    res = hook_impl.function(*args)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 1126, in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 925, in call_fixture_func\n    fixture_result = next(generator)\n  File \"/wlan-testing/tests/conftest.py\", line 655, in firmware_upgrade\n    upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n  File \"/wlan-testing/tests/fixtures_2x.py\", line 155, in setup_firmware\n    current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "87e807cd836e506d",
+      "name" : "firmwares/limit=10000&deviceType=cig_wf194c&latestonly=offset=3000",
+      "source" : "87e807cd836e506d.json",
+      "type" : "application/json",
+      "size" : 82856
+    }, {
+      "uid" : "1f39fcab355c4e60",
+      "name" : "Target firmware : ",
+      "source" : "1f39fcab355c4e60.attach",
+      "type" : "text/plain",
+      "size" : 559
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1637584199303,
+      "stop" : 1637584199436,
+      "duration" : 133
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "afterStages" : [ {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1637587948881,
+      "stop" : 1637587948881,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1637584856222,
+      "stop" : 1637584986312,
+      "duration" : 130090
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "d923a260a2c9152c",
+      "name" : "logread",
+      "source" : "d923a260a2c9152c.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1637587948885,
+      "stop" : 1637587948885,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1637587948587,
+      "stop" : 1637587948587,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1637587948791,
+      "stop" : 1637587948791,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1637587948603,
+      "stop" : 1637587948603,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "uc_firmware"
+  }, {
+    "name" : "tag",
+    "value" : "uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "sanity_55"
+  }, {
+    "name" : "tag",
+    "value" : "firmware_upgrade"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "tag",
+    "value" : "test_resources"
+  }, {
+    "name" : "suite",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestFMS"
+  }, {
+    "name" : "host",
+    "value" : "testing-327-zh4nm"
+  }, {
+    "name" : "thread",
+    "value" : "7-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "Firmware Management",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 19,
+        "skipped" : 0,
+        "passed" : 32,
+        "unknown" : 0,
+        "total" : 51
+      },
+      "items" : [ {
+        "uid" : "1ec8516ea8129301",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1637429232026,
+          "stop" : 1637429232026,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "3787680c2591e459",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1636490744579,
+          "stop" : 1636490744579,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "94a08e45b0e32120",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1636317961629,
+          "stop" : 1636317961629,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "1fbd7d796e7c5767",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1636231477123,
+          "stop" : 1636231477123,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "a7e929465ba03926",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "time" : {
+          "start" : 1636145095860,
+          "stop" : 1636145095860,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "22eab95ec5acad58",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1636058714882,
+          "stop" : 1636058714882,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "a99c6387b73ca8e8",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635971993702,
+          "stop" : 1635971993703,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "1929e58ba705843d",
+        "status" : "broken",
+        "statusDetails" : "IndexError: list index out of range",
+        "time" : {
+          "start" : 1635937777432,
+          "stop" : 1635937777432,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "2993ae27a556313",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635885606442,
+          "stop" : 1635885606443,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "22fef193a3c6b096",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635799060709,
+          "stop" : 1635799060710,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "59a6791c6b434b48",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635753017265,
+          "stop" : 1635753017266,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "bdbd4cba74eac2a0",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635712513768,
+          "stop" : 1635712513768,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "fa5747812f13541d",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635662808413,
+          "stop" : 1635662808413,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "35f1c1c0308b599f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635626110986,
+          "stop" : 1635626110987,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "48849e3a06daa3bd",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635606030695,
+          "stop" : 1635606030696,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "84dec83b4cbc27d0",
+        "status" : "passed",
+        "time" : {
+          "start" : 1635282618270,
+          "stop" : 1635282618270,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "a53948f2dc0ba2ba",
+        "status" : "passed",
+        "time" : {
+          "start" : 1634944638642,
+          "stop" : 1634944638642,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "e043c9100a8241f8",
+        "status" : "passed",
+        "time" : {
+          "start" : 1634850415947,
+          "stop" : 1634850415947,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "9d9f8a9b22980835",
+        "status" : "passed",
+        "time" : {
+          "start" : 1634743226793,
+          "stop" : 1634743226793,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "dd1698bcb2702c8c",
+        "status" : "passed",
+        "time" : {
+          "start" : 1634738511920,
+          "stop" : 1634738511920,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ "sanity_55", "test_resources", "sanity", "firmware_upgrade", "uc_firmware", "uc_sanity" ]
+  },
+  "source" : "48053641278164af.json",
+  "parameterValues" : [ ]
+}
