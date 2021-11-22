@@ -2,7 +2,7 @@ import os
 import allure
 import pytest
 
-pytestmark = [pytest.mark.max_client_per_radio]  # pytest.mark.usefixtures("setup_test_run")
+pytestmark = [pytest.mark.regression,pytest.mark.max_client_per_radio]  # pytest.mark.usefixtures("setup_test_run")
 
 setup_params_general = {
     "mode": "NAT",
