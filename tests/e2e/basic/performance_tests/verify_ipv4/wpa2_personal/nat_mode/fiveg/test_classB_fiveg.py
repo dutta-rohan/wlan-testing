@@ -35,9 +35,9 @@ class TestClassBIP(object):
 
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
-    @allure.testcase(name="test_classB_ip",
+    @allure.testcase(name="test_classB_ip_fiveg",
                      url="https://telecominfraproject.atlassian.net/browse/WIFI-4875")
-    def test_classB_ip(self, get_vif_state, lf_tools,
+    def test_classB_ip_fiveg(self, get_vif_state, lf_tools,
                                 create_lanforge_chamberview_dut, lf_test,station_names_fiveg, get_configuration):
         """
         pytest -m "verify_classA_ip and wpa2_personal and nat and fiveg"

@@ -35,9 +35,9 @@ class TestClassAIP(object):
 
     @pytest.mark.wpa2_personal
     @pytest.mark.twog
-    @allure.testcase(name="test_classA_ip",
+    @allure.testcase(name="test_classA_ip_twog",
                      url="https://telecominfraproject.atlassian.net/browse/WIFI-4874")
-    def test_classA_ip(self, get_vif_state, lf_tools,
+    def test_classA_ip_twog(self, get_vif_state, lf_tools,
                        create_lanforge_chamberview_dut, lf_test, station_names_twog, get_configuration):
         """
         pytest -m "verify_classA_ip and wpa2_personal and nat and twog"
