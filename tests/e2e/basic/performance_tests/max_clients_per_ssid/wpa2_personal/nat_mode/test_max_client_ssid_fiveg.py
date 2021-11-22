@@ -2,7 +2,7 @@ import os
 import allure
 import pytest
 
-pytestmark = [pytest.mark.max_client_per_ssid]  # pytest.mark.usefixtures("setup_test_run")
+pytestmark = [pytest.mark.regression,pytest.mark.max_client_per_ssid]  # pytest.mark.usefixtures("setup_test_run")
 
 setup_params_general = {
     "mode": "NAT",
@@ -14,10 +14,6 @@ setup_params_general = {
     "radius": False
 }
 
-
-@pytest.mark.max_client_per_ssid
-@pytest.mark.wifi5
-@pytest.mark.wifi6
 @pytest.mark.parametrize(
     "setup_profiles",
     [setup_params_general],
@@ -27,7 +23,6 @@ setup_params_general = {
 @pytest.mark.usefixtures("setup_profiles")
 class TestMaxClientPerssid(object):
 
-    @pytest.mark.mahesh
     @pytest.mark.wpa2_personal
     @pytest.mark.fiveg
     @allure.testcase(name="test_max_client_wpa2_nat_fiveg",
