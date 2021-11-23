@@ -72,12 +72,12 @@ class TestClassBIP(object):
             for i, j in zip(station_ip[:2], config_ip[:2]):
                 if i != j:
                     print("station didn't got ip as per ClassB subnet")
-                    assert False
+                    assert False,"station didn't got ip as per ClassB subnet"
 
             print("station got ip as per ClassB subnet")
             assert True
         else:
             print("station didn't got ip")
-            assert False
+            assert False,"station didn't got ip"
         allure.attach("applied subnet to AP...%s" % (setup_params_general["ipv4"]["subnet"]))
         allure.attach("Received subnet from station...%s" % ('.'.join(station_ip)))
