@@ -1,0 +1,396 @@
+{
+  "uid" : "aa643aae1816f800",
+  "name" : "test_firmware_upgrade_request",
+  "fullName" : "test_connectivity.TestFMS#test_firmware_upgrade_request",
+  "historyId" : "12d337a2c9ca27419cbc831bf70f6bf7",
+  "time" : {
+    "start" : 1637921083367,
+    "stop" : 1637921083367,
+    "duration" : 0
+  },
+  "status" : "broken",
+  "statusMessage" : "TypeError: string indices must be integers",
+  "statusTrace" : "fixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7fbd140fad60>\nget_apnos = <class 'apnos.apnos.APNOS'>\nget_configuration = {'access_point': [{'Backup Location': '', 'Backup Password': '', 'Backup Type': 'File System', 'Backup User': '', ...}...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan1', ...}, 'name': 'lanforge'}}\n\n    @pytest.fixture(scope=\"session\")\n    def firmware_upgrade(fixtures_ver, get_apnos, get_configuration):\n>       upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n\nconftest.py:655: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <fixtures_2x.Fixtures_2x object at 0x7fbd140fad60>\nget_apnos = <class 'apnos.apnos.APNOS'>\nget_configuration = {'access_point': [{'Backup Location': '', 'Backup Password': '', 'Backup Type': 'File System', 'Backup User': '', ...}...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan1', ...}, 'name': 'lanforge'}}\nrequest = ''\n\n    def setup_firmware(self, get_apnos, get_configuration, request=\"\"):\n        # Query AP Firmware\n        upgrade_status = []\n        for ap in get_configuration['access_point']:\n    \n            ap_ssh = get_apnos(ap, pwd=\"../libs/apnos/\", sdk=\"2.x\")\n            # If specified as URL\n            try:\n                response = requests.get(ap['version'])\n                print(\"URL is valid and exists on the internet\")\n                allure.attach(name=\"firmware url: \", body=str(ap['version']))\n                target_revision_commit = ap['version'].split(\"-\")[-2]\n                ap_version = ap_ssh.get_ap_version_ucentral()\n                current_version_commit = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                if target_revision_commit in current_version_commit:\n                    continue\n                self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(ap['version']))\n    \n                items = list(range(0, 300))\n                l = len(items)\n                ap_version = ap_ssh.get_ap_version_ucentral()\n                current_version_commit = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                if target_revision_commit in current_version_commit:\n                    upgrade_status.append([ap['serial'], target_revision_commit, current_version_commit])\n                    print(\"Firmware Upgraded to :\", ap_version)\n                else:\n                    print(\"firmware upgraded failed: \", target_revision)\n                    upgrade_status.append([ap['serial'], target_revision_commit, current_version_commit])\n                break\n            except Exception as e:\n                print(\"URL does not exist on Internet\")\n            # else Specified as \"branch-commit_id\" / \"branch-latest\"\n            firmware_url = \"\"\n            ap_version = ap_ssh.get_ap_version_ucentral()\n            response = self.fw_client.get_latest_fw(model=ap[\"model\"])\n            # if the target version specified is \"branch-latest\"\n            if ap['version'].split('-')[1] == \"latest\":\n                # get the latest branch\n                firmware_list = self.fw_client.get_firmwares(model=ap['model'], branch=\"\", commit_id='')\n                firmware_list.reverse()\n    \n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1].__contains__('v2.'):\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware))\n                            target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\n    \n                            # check the current AP Revision before upgrade\n                            ap_version = ap_ssh.get_ap_version_ucentral()\n                            current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                            # print and report the firmware versions before upgrade\n                            allure.attach(name=\"Before Firmware Upgrade Request: \",\n                                          body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                            print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n    \n                            # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                            if current_version == target_revision:\n                                upgrade_status.append([ap['serial'], target_revision, current_version, 'skip'])\n                                print(\"Skipping Upgrade! AP is already in target version\")\n                                allure.attach(name=\"Skipping Upgrade because AP is already in the target Version\",\n                                              body=\"\")\n                                break\n    \n                            self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(firmware['uri']))\n                            # wait for 300 seconds after firmware upgrade\n                            print(\"waiting for 300 Sec for Firmware Upgrade\")\n                            time.sleep(300)\n    \n                            # check the current AP Revision again\n                            ap_version = ap_ssh.get_ap_version_ucentral()\n                            current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                            # print and report the Firmware versions after upgrade\n                            allure.attach(name=\"After Firmware Upgrade Request: \",\n                                          body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                            print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n                            if current_version == target_revision:\n                                upgrade_status.append([ap['serial'], target_revision, current_version])\n                                print(\"firmware upgraded successfully: \", target_revision)\n                            else:\n                                upgrade_status.append([ap['serial'], target_revision, current_version])\n                                print(\"firmware upgraded failed: \", target_revision)\n                            break\n                    if firmware['image'].split(\"-\")[-2] == ap['version'].split('-')[0]:\n                        print(\"Target Firmware: \\n\", firmware)\n                        allure.attach(name=\"Target firmware : \", body=str(firmware))\n    \n                        target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\n    \n                        # check the current AP Revision before upgrade\n                        ap_version = ap_ssh.get_ap_version_ucentral()\n                        current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                        # print and report the firmware versions before upgrade\n                        allure.attach(name=\"Before Firmware Upgrade Request: \",\n                                      body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                        print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n    \n                        # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                        if current_version == target_revision:\n                            upgrade_status.append([ap['serial'], target_revision, current_version, 'skip'])\n                            print(\"Skipping Upgrade! AP is already in target version\")\n                            allure.attach(name=\"Skipping Upgrade because AP is already in the target Version\", body=\"\")\n                            break\n    \n                        self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(firmware['uri']))\n                        # wait for 300 seconds after firmware upgrade\n                        print(\"waiting for 300 Sec for Firmware Upgrade\")\n                        time.sleep(300)\n    \n                        # check the current AP Revision again\n                        ap_version = ap_ssh.get_ap_version_ucentral()\n                        current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                        # print and report the Firmware versions after upgrade\n                        allure.attach(name=\"After Firmware Upgrade Request: \",\n                                      body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                        print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n                        if current_version == target_revision:\n                            upgrade_status.append([ap['serial'], target_revision, current_version])\n                            print(\"firmware upgraded successfully: \", target_revision)\n                        else:\n                            upgrade_status.append([ap['serial'], target_revision, current_version])\n                            print(\"firmware upgraded failed: \", target_revision)\n                        break\n            # if branch-commit is specified\n            else:\n                firmware_list = self.fw_client.get_firmwares(model=ap['model'], branch=\"\", commit_id='')\n                fw_list = []\n                # getting the list of firmwares in fw_list that has the commit id specified as an input\n                for firmware in firmware_list:\n                    if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[-1] == ap['version'].split('-')[\n                        1]:\n                        fw_list.append(firmware)\n    \n                # If there is only 1 commit ID in fw_list\n                if len(fw_list) == 1:\n    \n                    print(\"Target Firmware: \\n\", fw_list[0])\n                    allure.attach(name=\"Target firmware : \", body=str(fw_list[0]))\n    \n                    url = fw_list[0]['uri']\n                    target_revision = fw_list[0]['revision'].split(\"/\")[1].replace(\" \", \"\")\n    \n                    # check the current AP Revision before upgrade\n                    ap_version = ap_ssh.get_ap_version_ucentral()\n                    current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n    \n                    # print and report the firmware versions before upgrade\n                    allure.attach(name=\"Before Firmware Upgrade Request: \",\n                                  body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                    print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n    \n                    # if AP is already in target Version then skip upgrade unless force upgrade is specified\n                    if current_version == target_revision:\n                        upgrade_status.append([ap['serial'], target_revision, current_version, 'skip'])\n                        print(\"Skipping Upgrade! AP is already in target version\")\n                        allure.attach(name=\"Skipping Upgrade because AP is already in the target Version\", body=\"\")\n                        break\n    \n                    # upgrade the firmware in another condition\n                    else:\n                        self.fw_client.upgrade_firmware(serial=ap['serial'], url=str(url))\n    \n                        # wait for 300 seconds after firmware upgrade\n                        print(\"waiting for 300 Sec for Firmware Upgrade\")\n                        time.sleep(300)\n    \n                        # check the current AP Revision again\n                        ap_version = ap_ssh.get_ap_version_ucentral()\n                        current_version = str(ap_version).split(\"/\")[1].replace(\" \", \"\").splitlines()[0]\n                        # print and report the Firmware versions after upgrade\n                        allure.attach(name=\"After Firmware Upgrade Request: \",\n                                      body=\"current revision: \" + current_version + \"\\ntarget revision: \" + target_revision)\n                        print(\"current revision: \", current_version, \"\\ntarget revision: \", target_revision)\n                        if current_version == target_revision:\n                            upgrade_status.append([ap['serial'], target_revision, current_version])\n                            print(\"firmware upgraded successfully: \", target_revision)\n                        else:\n                            upgrade_status.append([ap['serial'], target_revision, current_version])\n                            print(\"firmware upgraded failed: \", target_revision)\n                        break\n    \n                # if there are 1+ firmware images in fw_list then check for branch\n                else:\n                    target_fw = \"\"\n                    for firmware in fw_list:\n                        if ap['version'].split('-')[0] == 'release':\n                            if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1].__contains__('v2.'):\n                                target_fw = firmware\n                                break\n                        if firmware['image'].split(\"-\")[-2] == ap['version'].split('-')[0]:\n                            target_fw = firmware\n                            break\n                    firmware = target_fw\n                    print(\"Target Firmware: \\n\", firmware)\n                    allure.attach(name=\"Target firmware : \", body=str(firmware))\n    \n>                   target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\nE                   TypeError: string indices must be integers\n\nfixtures_2x.py:261: TypeError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1637921016314,
+      "stop" : 1637921016314,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1637921016162,
+      "stop" : 1637921016162,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "firmware_upgrade",
+    "time" : {
+      "start" : 1637921083368,
+      "stop" : 1637921097864,
+      "duration" : 14496
+    },
+    "status" : "broken",
+    "statusMessage" : "TypeError: string indices must be integers\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/pluggy/callers.py\", line 187, in _multicall\n    res = hook_impl.function(*args)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 1126, in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 925, in call_fixture_func\n    fixture_result = next(generator)\n  File \"/wlan-testing/tests/conftest.py\", line 655, in firmware_upgrade\n    upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n  File \"/wlan-testing/tests/fixtures_2x.py\", line 261, in setup_firmware\n    target_revision = firmware['revision'].split(\"/\")[1].replace(\" \", \"\")\n",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "199f0543f840c209",
+      "name" : "firmwares/limit=10000&deviceType=&latestonly=offset=3000",
+      "source" : "199f0543f840c209.json",
+      "type" : "application/json",
+      "size" : 1636315
+    }, {
+      "uid" : "2092c4745224b1da",
+      "name" : "Target firmware : ",
+      "source" : "2092c4745224b1da.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1637921016162,
+      "stop" : 1637921016162,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1637921016161,
+      "stop" : 1637921016161,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1637921098371,
+      "stop" : 1637921101349,
+      "duration" : 2978
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1637921016163,
+      "stop" : 1637921016279,
+      "duration" : 116
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "afterStages" : [ {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1637927601369,
+      "stop" : 1637927601369,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1637927601650,
+      "stop" : 1637927601650,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1637927601690,
+      "stop" : 1637927601690,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1637927601693,
+      "stop" : 1637927601694,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1637921104239,
+      "stop" : 1637921118955,
+      "duration" : 14716
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "d894a38b8ede422",
+      "name" : "logread",
+      "source" : "d894a38b8ede422.attach",
+      "type" : "text/plain",
+      "size" : 245
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1637927601455,
+      "stop" : 1637927601455,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "uc_firmware"
+  }, {
+    "name" : "tag",
+    "value" : "test_resources"
+  }, {
+    "name" : "tag",
+    "value" : "sanity_55"
+  }, {
+    "name" : "tag",
+    "value" : "firmware_upgrade"
+  }, {
+    "name" : "tag",
+    "value" : "uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "suite",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestFMS"
+  }, {
+    "name" : "host",
+    "value" : "testing-102-dnv57"
+  }, {
+    "name" : "thread",
+    "value" : "376-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "Firmware Management",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 3,
+        "skipped" : 0,
+        "passed" : 9,
+        "unknown" : 0,
+        "total" : 12
+      },
+      "items" : [ {
+        "uid" : "59a31b282820cd66",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637874474586,
+          "stop" : 1637874474587,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "e041f1aadeee8839",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637853245165,
+          "stop" : 1637853245165,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "37b218d5ac26db8c",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637787522459,
+          "stop" : 1637787522460,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "b377f0bedeea267b",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637726045095,
+          "stop" : 1637726045096,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "17a32403bf22d85e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637701632977,
+          "stop" : 1637701632977,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "c62f02be05a1d408",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637615062759,
+          "stop" : 1637615062759,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "bac3fcd3b2f4051e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637528611873,
+          "stop" : 1637528611873,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "aabc02ec3274c958",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637442257497,
+          "stop" : 1637442257497,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b9683fb13eb7be51",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637356864149,
+          "stop" : 1637356864149,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "3474a320c4da2587",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "time" : {
+          "start" : 1637270881054,
+          "stop" : 1637270881054,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "9200c7a6d27b29a5",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: HTTPSConnectionPool(host='fms-91d862d2.cicd.lab.wlan.tip.build', port=16004): Max retries exceeded with url: /api/v1/firmwares/?deviceSet=true (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb6dd2056a0>: Failed to establish a new connection: [Errno -5] No address associated with hostname'))",
+        "time" : {
+          "start" : 1637233784324,
+          "stop" : 1637233784324,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ "test_resources", "sanity_55", "sanity", "firmware_upgrade", "uc_firmware", "uc_sanity" ]
+  },
+  "source" : "aa643aae1816f800.json",
+  "parameterValues" : [ ]
+}
