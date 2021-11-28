@@ -1,0 +1,401 @@
+{
+  "uid" : "b4658b0378f3cab2",
+  "name" : "test_firmware_upgrade_request",
+  "fullName" : "test_connectivity.TestFMS#test_firmware_upgrade_request",
+  "historyId" : "12d337a2c9ca27419cbc831bf70f6bf7",
+  "time" : {
+    "start" : 1638133031461,
+    "stop" : 1638133031461,
+    "duration" : 0
+  },
+  "status" : "broken",
+  "statusMessage" : "NameError: Invalid response code.",
+  "statusTrace" : "fixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7f82d0ba9d30>\nget_apnos = <class 'apnos.apnos.APNOS'>\nget_configuration = {'access_point': [{'Backup Location': '', 'Backup Password': '', 'Backup Type': 'File System', 'Backup User': '', ...}...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan1', ...}, 'name': 'lanforge'}}\n\n    @pytest.fixture(scope=\"session\")\n    def firmware_upgrade(fixtures_ver, get_apnos, get_configuration):\n>       upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n\nconftest.py:655: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nfixtures_2x.py:97: in setup_firmware\n    response = self.fw_client.get_latest_fw(model=ap[\"model\"])\n../libs/controller/controller_2x/controller.py:243: in get_latest_fw\n    device_type = self.ap_model_lookup(model=model)\n../libs/controller/controller_2x/controller.py:226: in ap_model_lookup\n    devices = self.get_device_set()\n../libs/controller/controller_2x/controller.py:254: in get_device_set\n    response = self.sdk_client.request(service=\"fms\", command=\"firmwares/\", method=\"GET\", params=\"deviceSet=true\",\n../libs/controller/controller_2x/controller.py:87: in request\n    self.check_response(method, resp, self.make_headers(), payload, uri)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <controller.controller_2x.controller.Controller object at 0x7f82d0ba9ca0>\ncmd = 'GET', response = <Response [403]>\nheaders = {'Authorization': 'Bearer 5276f380dac6fc295793eb60b506e5396468a5e9e8e0099e21834e3a8bcd5102', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=10, max=1000'}\ndata_str = ''\nurl = 'https://fms-51189009.cicd.lab.wlan.tip.build:16004/api/v1/firmwares/'\n\n    def check_response(self, cmd, response, headers, data_str, url):\n        if response.status_code >= 400:\n            if response.status_code >= 400:\n                print(\"check-response: ERROR, url: \", url)\n            else:\n                print(\"check-response: url: \", url)\n            print(\"Command: \", cmd)\n            print(\"response-status: \", response.status_code)\n            print(\"response-headers: \", response.headers)\n            print(\"response-content: \", response.content)\n            print(\"headers: \", headers)\n            print(\"data-str: \", data_str)\n    \n        if response.status_code >= 400:\n            # if True:\n>           raise NameError(\"Invalid response code.\")\nE           NameError: Invalid response code.\n\n../libs/controller/controller_2x/controller.py:153: NameError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1638132975014,
+      "stop" : 1638132975014,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "firmware_upgrade",
+    "time" : {
+      "start" : 1638133031462,
+      "stop" : 1638133034395,
+      "duration" : 2933
+    },
+    "status" : "broken",
+    "statusMessage" : "NameError: Invalid response code.\n",
+    "statusTrace" : "  File \"/usr/local/lib/python3.8/site-packages/pluggy/callers.py\", line 187, in _multicall\n    res = hook_impl.function(*args)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 1126, in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n  File \"/usr/local/lib/python3.8/site-packages/_pytest/fixtures.py\", line 925, in call_fixture_func\n    fixture_result = next(generator)\n  File \"/wlan-testing/tests/conftest.py\", line 655, in firmware_upgrade\n    upgrade_status = fixtures_ver.setup_firmware(get_apnos, get_configuration)\n  File \"/wlan-testing/tests/fixtures_2x.py\", line 97, in setup_firmware\n    response = self.fw_client.get_latest_fw(model=ap[\"model\"])\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 243, in get_latest_fw\n    device_type = self.ap_model_lookup(model=model)\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 226, in ap_model_lookup\n    devices = self.get_device_set()\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 254, in get_device_set\n    response = self.sdk_client.request(service=\"fms\", command=\"firmwares/\", method=\"GET\", params=\"deviceSet=true\",\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 87, in request\n    self.check_response(method, resp, self.make_headers(), payload, uri)\n  File \"/wlan-testing/tests/../libs/controller/controller_2x/controller.py\", line 153, in check_response\n    raise NameError(\"Invalid response code.\")\n",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1638132974866,
+      "stop" : 1638132974866,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1638132974868,
+      "stop" : 1638132974984,
+      "duration" : 116
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1638133035156,
+      "stop" : 1638133038095,
+      "duration" : 2939
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1638132974867,
+      "stop" : 1638132974867,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1638132974867,
+      "stop" : 1638132974867,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "afterStages" : [ {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1638142509659,
+      "stop" : 1638142509659,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1638142509947,
+      "stop" : 1638142509947,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1638142509744,
+      "stop" : 1638142509744,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1638133041053,
+      "stop" : 1638133055157,
+      "duration" : 14104
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "8d038e8c3ea6980f",
+      "name" : "logread",
+      "source" : "8d038e8c3ea6980f.attach",
+      "type" : "text/plain",
+      "size" : 267
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1638142509853,
+      "stop" : 1638142509853,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1638142509866,
+      "stop" : 1638142509866,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "tag",
+    "value" : "uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "sanity_55"
+  }, {
+    "name" : "tag",
+    "value" : "uc_firmware"
+  }, {
+    "name" : "tag",
+    "value" : "test_resources"
+  }, {
+    "name" : "tag",
+    "value" : "firmware_upgrade"
+  }, {
+    "name" : "suite",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestFMS"
+  }, {
+    "name" : "host",
+    "value" : "testing-111-t59sr"
+  }, {
+    "name" : "thread",
+    "value" : "786-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "Firmware Management",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 4,
+        "skipped" : 0,
+        "passed" : 10,
+        "unknown" : 0,
+        "total" : 14
+      },
+      "items" : [ {
+        "uid" : "ddb2b78d8b0528cc",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637961063868,
+          "stop" : 1637961063869,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "aa643aae1816f800",
+        "status" : "broken",
+        "statusDetails" : "TypeError: string indices must be integers",
+        "time" : {
+          "start" : 1637921083367,
+          "stop" : 1637921083367,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "59a31b282820cd66",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637874474586,
+          "stop" : 1637874474587,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "e041f1aadeee8839",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637853245165,
+          "stop" : 1637853245165,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "37b218d5ac26db8c",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637787522459,
+          "stop" : 1637787522460,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "b377f0bedeea267b",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637726045095,
+          "stop" : 1637726045096,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "17a32403bf22d85e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637701632977,
+          "stop" : 1637701632977,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "c62f02be05a1d408",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637615062759,
+          "stop" : 1637615062759,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "bac3fcd3b2f4051e",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637528611873,
+          "stop" : 1637528611873,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "aabc02ec3274c958",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637442257497,
+          "stop" : 1637442257497,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b9683fb13eb7be51",
+        "status" : "passed",
+        "time" : {
+          "start" : 1637356864149,
+          "stop" : 1637356864149,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "3474a320c4da2587",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+        "time" : {
+          "start" : 1637270881054,
+          "stop" : 1637270881054,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "9200c7a6d27b29a5",
+        "status" : "broken",
+        "statusDetails" : "requests.exceptions.ConnectionError: HTTPSConnectionPool(host='fms-91d862d2.cicd.lab.wlan.tip.build', port=16004): Max retries exceeded with url: /api/v1/firmwares/?deviceSet=true (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb6dd2056a0>: Failed to establish a new connection: [Errno -5] No address associated with hostname'))",
+        "time" : {
+          "start" : 1637233784324,
+          "stop" : 1637233784324,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ "sanity_55", "test_resources", "sanity", "firmware_upgrade", "uc_firmware", "uc_sanity" ]
+  },
+  "source" : "b4658b0378f3cab2.json",
+  "parameterValues" : [ ]
+}
