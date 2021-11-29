@@ -40,6 +40,7 @@ class TestMaxClientPerssid(object):
         band = "twog"
         vlan = 1
         num_sta_max = (profile_data[0]["maximum-clients"])
+        lf_tools.reset_scenario()
         print(lf_tools.dut_idx_mapping)
         lf_tools.add_stations(band="2G", num_stations=int(num_sta_max)+1, dut=lf_tools.dut_name, ssid_name=ssid)
         lf_tools.Chamber_View()
