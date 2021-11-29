@@ -1,0 +1,1029 @@
+{
+  "uid" : "fded1902613a7ecd",
+  "name" : "test_ClientConnect_5g_WPA_Personal_Nat[setup_profiles0]",
+  "fullName" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.android.test_general_security_modes.TestNatModeConnectSuiteOne#test_ClientConnect_5g_WPA_Personal_Nat",
+  "historyId" : "770dd7db86850bb5e4e86e517ca6e8bf",
+  "time" : {
+    "start" : 1638220414075,
+    "stop" : 1638220417794,
+    "duration" : 3719
+  },
+  "status" : "failed",
+  "statusMessage" : "AssertionError: assert False",
+  "statusTrace" : "self = <tests.e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.android.test_general_security_modes.TestNatModeConnectSuiteOne object at 0x7fd4e7508220>\nrequest = <FixtureRequest for <Function test_ClientConnect_5g_WPA_Personal_Nat[setup_profiles0]>>\nget_vif_state = ['ssid_wpa2_eap_5g', 'ssid_wpa2_eap_2g', 'ssid_wpa3_eap_5g', 'ssid_wpa3_eap_2g', 'ssid_wpa_eap_5g', 'ssid_wpa_eap_2g', ...]\nget_ap_logs = None\nget_ToggleAirplaneMode_data = {'BtnRunSpeedTest': \"//*[text()='RUN SPEED TEST']\", 'UploadMbps': \"//*[@id='knowledge-verticals-internetspeedtest__upl...[@class='spiqle']\", 'appPackage-android': 'com.android.settings', 'bundleId-iOS-Safari': 'com.apple.mobilesafari', ...}\nsetup_perfectoMobile_android = (<appium.webdriver.webdriver.WebDriver (session=\"9d40b492-c3e8-4a01-9aab-58a34e039ced\")>, <perfecto.client.PerfectoReportiumClient.PerfectoReportiumClient object at 0x7fd4e752a850>)\n\n    @allure.testcase(url=\"https://telecominfraproject.atlassian.net/browse/WIFI-4507\", name=\"WIFI-4507\")\n    @pytest.mark.fiveg\n    @pytest.mark.wpa\n    def test_ClientConnect_5g_WPA_Personal_Nat(self, request, get_vif_state, get_ap_logs,\n                                               get_ToggleAirplaneMode_data, setup_perfectoMobile_android):\n    \n        profile_data = setup_params_general[\"ssid_modes\"][\"wpa\"][1]\n        ssidName = profile_data[\"ssid_name\"]\n        ssidPassword = profile_data[\"security_key\"]\n        print (\"SSID_NAME: \" + ssidName)\n        print (\"SSID_PASS: \" + ssidPassword)\n        get_vif_state.append(ssidName)\n    \n        if ssidName not in get_vif_state:\n            allure.attach(name=\"retest,vif state ssid not available:\", body=str(get_vif_state))\n            pytest.xfail(\"SSID NOT AVAILABLE IN VIF STATE\")\n    \n        report = setup_perfectoMobile_android[1]\n        driver = setup_perfectoMobile_android[0]\n        connData = get_ToggleAirplaneMode_data\n    \n        # Set Wifi/AP Mode\n        ip, is_internet = get_ip_address_and(request, ssidName, ssidPassword, setup_perfectoMobile_android, connData)\n    \n        if ip:\n            if is_internet:\n                text_body = (\"connected to \" + ssidName + \" (\" + ip + \") \" + \"with internet\")\n            else:\n                text_body = (\"connected to \" + ssidName + \" (\" + ip + \") \" + \"without internet\")\n            print(text_body)\n            allure.attach(name=\"Connection Status: \", body=str(text_body))\n            assert True\n        else:\n            allure.attach(name=\"Connection Status: \", body=str(\"Device is Unable to connect\"))\n>           assert False\nE           assert False\n\ne2e/interOp/validation_of_operating_modes/nat_mode/client_connect_test/android/test_general_security_modes.py:160: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "add_env_properties",
+    "time" : {
+      "start" : 1638218269018,
+      "stop" : 1638218272013,
+      "duration" : 2995
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1638218269017,
+      "stop" : 1638218269018,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers",
+    "time" : {
+      "start" : 1638218272014,
+      "stop" : 1638218272015,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_accounting_info",
+    "time" : {
+      "start" : 1638218272016,
+      "stop" : 1638218272016,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_sdk_version",
+    "time" : {
+      "start" : 1638218267959,
+      "stop" : 1638218269017,
+      "duration" : 1058
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1638218267848,
+      "stop" : 1638218267848,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "skip_lf",
+    "time" : {
+      "start" : 1638218272014,
+      "stop" : 1638218272014,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1638218267849,
+      "stop" : 1638218267959,
+      "duration" : 110
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1638218267849,
+      "stop" : 1638218267849,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles",
+    "time" : {
+      "start" : 1638220152319,
+      "stop" : 1638220261684,
+      "duration" : 109365
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "9a4fd9f8ea612762",
+      "name" : "ucentral_config: ",
+      "source" : "9a4fd9f8ea612762.json",
+      "type" : "application/json",
+      "size" : 2046
+    }, {
+      "uid" : "bbf3c06a53085212",
+      "name" : "/configure response: 200",
+      "source" : "bbf3c06a53085212.json",
+      "type" : "application/json",
+      "size" : 2561
+    }, {
+      "uid" : "62e30925ed3fa976",
+      "name" : "Config Sent from API: ",
+      "source" : "62e30925ed3fa976.json",
+      "type" : "application/json",
+      "size" : 2045
+    }, {
+      "uid" : "5cbe1d123dda0c9b",
+      "name" : "Latest Config Received by AP: ",
+      "source" : "5cbe1d123dda0c9b.json",
+      "type" : "application/json",
+      "size" : 1928
+    }, {
+      "uid" : "e8aa9df90af201d",
+      "name" : "Time Took to apply Config: 17.995797872543335",
+      "source" : "e8aa9df90af201d.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    }, {
+      "uid" : "ae5ae886fe576a40",
+      "name" : "Success : Active Config in AP: ",
+      "source" : "ae5ae886fe576a40.attach",
+      "type" : "text/plain",
+      "size" : 2055
+    }, {
+      "uid" : "1627a857284be663",
+      "name" : "iwinfo: ",
+      "source" : "1627a857284be663.attach",
+      "type" : "text/plain",
+      "size" : 3292
+    }, {
+      "uid" : "d4c1248f2f74e5ba",
+      "name" : "AP Log: ",
+      "source" : "d4c1248f2f74e5ba.attach",
+      "type" : "text/plain",
+      "size" : 37535
+    }, {
+      "uid" : "303d45fa23ed9814",
+      "name" : "wifi status",
+      "source" : "303d45fa23ed9814.attach",
+      "type" : "text/plain",
+      "size" : 3821
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 9,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_equipment_ref",
+    "time" : {
+      "start" : 1638218272014,
+      "stop" : 1638218272014,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_perfectoMobile_android",
+    "time" : {
+      "start" : 1638220386597,
+      "stop" : 1638220414074,
+      "duration" : 27477
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ToggleAirplaneMode_data",
+    "time" : {
+      "start" : 1638220386596,
+      "stop" : 1638220386596,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile",
+    "time" : {
+      "start" : 1638218272014,
+      "stop" : 1638218272014,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags",
+    "time" : {
+      "start" : 1638218272014,
+      "stop" : 1638218272014,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "create_lanforge_chamberview_dut",
+    "time" : {
+      "start" : 1638218272016,
+      "stop" : 1638218272016,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1638218267847,
+      "stop" : 1638218267848,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info",
+    "time" : {
+      "start" : 1638218267848,
+      "stop" : 1638218267848,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools",
+    "time" : {
+      "start" : 1638218272016,
+      "stop" : 1638218272016,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1638220383523,
+      "stop" : 1638220386596,
+      "duration" : 3073
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller",
+    "time" : {
+      "start" : 1638218272013,
+      "stop" : 1638218272013,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_vif_state",
+    "time" : {
+      "start" : 1638220261684,
+      "stop" : 1638220261685,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "failed",
+    "statusMessage" : "AssertionError: assert False",
+    "statusTrace" : "self = <tests.e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.android.test_general_security_modes.TestNatModeConnectSuiteOne object at 0x7fd4e7508220>\nrequest = <FixtureRequest for <Function test_ClientConnect_5g_WPA_Personal_Nat[setup_profiles0]>>\nget_vif_state = ['ssid_wpa2_eap_5g', 'ssid_wpa2_eap_2g', 'ssid_wpa3_eap_5g', 'ssid_wpa3_eap_2g', 'ssid_wpa_eap_5g', 'ssid_wpa_eap_2g', ...]\nget_ap_logs = None\nget_ToggleAirplaneMode_data = {'BtnRunSpeedTest': \"//*[text()='RUN SPEED TEST']\", 'UploadMbps': \"//*[@id='knowledge-verticals-internetspeedtest__upl...[@class='spiqle']\", 'appPackage-android': 'com.android.settings', 'bundleId-iOS-Safari': 'com.apple.mobilesafari', ...}\nsetup_perfectoMobile_android = (<appium.webdriver.webdriver.WebDriver (session=\"9d40b492-c3e8-4a01-9aab-58a34e039ced\")>, <perfecto.client.PerfectoReportiumClient.PerfectoReportiumClient object at 0x7fd4e752a850>)\n\n    @allure.testcase(url=\"https://telecominfraproject.atlassian.net/browse/WIFI-4507\", name=\"WIFI-4507\")\n    @pytest.mark.fiveg\n    @pytest.mark.wpa\n    def test_ClientConnect_5g_WPA_Personal_Nat(self, request, get_vif_state, get_ap_logs,\n                                               get_ToggleAirplaneMode_data, setup_perfectoMobile_android):\n    \n        profile_data = setup_params_general[\"ssid_modes\"][\"wpa\"][1]\n        ssidName = profile_data[\"ssid_name\"]\n        ssidPassword = profile_data[\"security_key\"]\n        print (\"SSID_NAME: \" + ssidName)\n        print (\"SSID_PASS: \" + ssidPassword)\n        get_vif_state.append(ssidName)\n    \n        if ssidName not in get_vif_state:\n            allure.attach(name=\"retest,vif state ssid not available:\", body=str(get_vif_state))\n            pytest.xfail(\"SSID NOT AVAILABLE IN VIF STATE\")\n    \n        report = setup_perfectoMobile_android[1]\n        driver = setup_perfectoMobile_android[0]\n        connData = get_ToggleAirplaneMode_data\n    \n        # Set Wifi/AP Mode\n        ip, is_internet = get_ip_address_and(request, ssidName, ssidPassword, setup_perfectoMobile_android, connData)\n    \n        if ip:\n            if is_internet:\n                text_body = (\"connected to \" + ssidName + \" (\" + ip + \") \" + \"with internet\")\n            else:\n                text_body = (\"connected to \" + ssidName + \" (\" + ip + \") \" + \"without internet\")\n            print(text_body)\n            allure.attach(name=\"Connection Status: \", body=str(text_body))\n            assert True\n        else:\n            allure.attach(name=\"Connection Status: \", body=str(\"Device is Unable to connect\"))\n>           assert False\nE           assert False\n\ne2e/interOp/validation_of_operating_modes/nat_mode/client_connect_test/android/test_general_security_modes.py:160: AssertionError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "944f5c79f6edd941",
+      "name" : "Connection Status: ",
+      "source" : "944f5c79f6edd941.attach",
+      "type" : "text/plain",
+      "size" : 27
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1638222456463,
+      "stop" : 1638222456463,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_markers::0",
+    "time" : {
+      "start" : 1638222456329,
+      "stop" : 1638222456329,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_accounting_info::0",
+    "time" : {
+      "start" : 1638222456310,
+      "stop" : 1638222456310,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_sdk_version::0",
+    "time" : {
+      "start" : 1638222456466,
+      "stop" : 1638222456466,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1638222456627,
+      "stop" : 1638222456627,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "skip_lf::0",
+    "time" : {
+      "start" : 1638222456346,
+      "stop" : 1638222456346,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1638222456526,
+      "stop" : 1638222456526,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1638222456543,
+      "stop" : 1638222456543,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles::1",
+    "time" : {
+      "start" : 1638220644259,
+      "stop" : 1638220644259,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_profiles::teardown_session",
+    "time" : {
+      "start" : 1638220644259,
+      "stop" : 1638220647063,
+      "duration" : 2804
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "3ce2365e07dcee52",
+      "name" : "wifi status",
+      "source" : "3ce2365e07dcee52.attach",
+      "type" : "text/plain",
+      "size" : 3821
+    }, {
+      "uid" : "ba2093e34cb05317",
+      "name" : "iwinfo: ",
+      "source" : "ba2093e34cb05317.attach",
+      "type" : "text/plain",
+      "size" : 3292
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 2,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_equipment_ref::0",
+    "time" : {
+      "start" : 1638222456419,
+      "stop" : 1638222456419,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_perfectoMobile_android::1",
+    "time" : {
+      "start" : 1638220417897,
+      "stop" : 1638220417897,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_perfectoMobile_android::teardown",
+    "time" : {
+      "start" : 1638220417897,
+      "stop" : 1638220437979,
+      "duration" : 20082
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ToggleAirplaneMode_data::0",
+    "time" : {
+      "start" : 1638220437980,
+      "stop" : 1638220437980,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "instantiate_profile::0",
+    "time" : {
+      "start" : 1638222456337,
+      "stop" : 1638222456337,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_security_flags::0",
+    "time" : {
+      "start" : 1638222456334,
+      "stop" : 1638222456334,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1638222456630,
+      "stop" : 1638222456630,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "radius_info::0",
+    "time" : {
+      "start" : 1638222456312,
+      "stop" : 1638222456312,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "lf_tools::0",
+    "time" : {
+      "start" : 1638222456325,
+      "stop" : 1638222456325,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1638220437981,
+      "stop" : 1638220448388,
+      "duration" : 10407
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "7a9ba2093414697d",
+      "name" : "logread",
+      "source" : "7a9ba2093414697d.attach",
+      "type" : "text/plain",
+      "size" : 1178
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "setup_controller::1",
+    "time" : {
+      "start" : 1638222456424,
+      "stop" : 1638222456424,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "setup_controller::disconnect",
+    "time" : {
+      "start" : 1638222456424,
+      "stop" : 1638222456451,
+      "duration" : 27
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_vif_state::0",
+    "time" : {
+      "start" : 1638220644257,
+      "stop" : 1638220644257,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "NAT MODE CLIENT CONNECT"
+  }, {
+    "name" : "subSuite",
+    "value" : "Nat Mode Client Connect : Suite-A"
+  }, {
+    "name" : "suite",
+    "value" : "interop sanity"
+  }, {
+    "name" : "tag",
+    "value" : "wpa"
+  }, {
+    "name" : "tag",
+    "value" : "fiveg"
+  }, {
+    "name" : "tag",
+    "value" : "InteropsuiteA"
+  }, {
+    "name" : "tag",
+    "value" : "interop"
+  }, {
+    "name" : "tag",
+    "value" : "interop_and"
+  }, {
+    "name" : "tag",
+    "value" : "client_connect"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "tag",
+    "value" : "interop_uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "@pytest.mark.usefixtures('setup_profiles')"
+  }, {
+    "name" : "tag",
+    "value" : "android"
+  }, {
+    "name" : "tag",
+    "value" : "nat"
+  }, {
+    "name" : "parentSuite",
+    "value" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.android"
+  }, {
+    "name" : "host",
+    "value" : "interop-ci-409-android-p426h"
+  }, {
+    "name" : "thread",
+    "value" : "7-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "e2e.interOp.validation_of_operating_modes.nat_mode.client_connect_test.android.test_general_security_modes"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "setup_profiles",
+    "value" : "{'mode': 'NAT', 'ssid_modes': {'wpa': [{'ssid_name': 'ssid_wpa_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk'}, {'ssid_name': 'ssid_wpa_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk'}], 'open': [{'ssid_name': 'ssid_open_2g', 'appliedRadios': ['2G'], 'security': 'none'}, {'ssid_name': 'ssid_open_5g', 'appliedRadios': ['5G'], 'security': 'none'}], 'wpa2_personal': [{'ssid_name': 'ssid_wpa2_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk2'}, {'ssid_name': 'ssid_wpa2_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk2'}]}, 'rf': {}, 'radius': False}"
+  } ],
+  "links" : [ {
+    "name" : "Galaxy S20",
+    "url" : "https://tip.app.perfectomobile.com/reporting/library?externalId[0]=testautomation@tip.com_RemoteWebDriver_21-11-29_21_13_08_4518&_timestamp[0]=1638220388405",
+    "type" : "link"
+  }, {
+    "name" : "WIFI-4507",
+    "url" : "https://telecominfraproject.atlassian.net/browse/WIFI-4507",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 11,
+        "broken" : 6,
+        "skipped" : 0,
+        "passed" : 0,
+        "unknown" : 0,
+        "total" : 17
+      },
+      "items" : [ {
+        "uid" : "749d037072524e32",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1638134138536,
+          "stop" : 1638134142454,
+          "duration" : 3918
+        }
+      }, {
+        "uid" : "2d9b4e12df5d88ab",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1638047573665,
+          "stop" : 1638047577754,
+          "duration" : 4089
+        }
+      }, {
+        "uid" : "693a386861e7428c",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637960843079,
+          "stop" : 1637960846916,
+          "duration" : 3837
+        }
+      }, {
+        "uid" : "f0d48c5f7043857e",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637874868497,
+          "stop" : 1637874872272,
+          "duration" : 3775
+        }
+      }, {
+        "uid" : "6c823dc83d9daee0",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1637699852165,
+          "stop" : 1637699852165,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "c7a5f16590c959e2",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637615731080,
+          "stop" : 1637615734852,
+          "duration" : 3772
+        }
+      }, {
+        "uid" : "2859c388a5f303d4",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637529356592,
+          "stop" : 1637529360535,
+          "duration" : 3943
+        }
+      }, {
+        "uid" : "1d61db26b527832a",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637442974916,
+          "stop" : 1637442978687,
+          "duration" : 3771
+        }
+      }, {
+        "uid" : "8f59a472af63dfcb",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637356601096,
+          "stop" : 1637356605107,
+          "duration" : 4011
+        }
+      }, {
+        "uid" : "6627b23607cbbe5",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1637270081852,
+          "stop" : 1637270085986,
+          "duration" : 4134
+        }
+      }, {
+        "uid" : "2a0ead7061c3585",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636922476781,
+          "stop" : 1636922476781,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "af9ac6cbc42b6bd8",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636836033058,
+          "stop" : 1636836033058,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "d069e8b68d31bfa8",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636749687430,
+          "stop" : 1636749687430,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "588cbeea6db16eca",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636663260261,
+          "stop" : 1636663260261,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "bc7fec72cbe0c235",
+        "status" : "broken",
+        "statusDetails" : "socket.timeout: timed out",
+        "time" : {
+          "start" : 1636576837131,
+          "stop" : 1636576837131,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "82eca73e997eaae8",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1636492895792,
+          "stop" : 1636492899444,
+          "duration" : 3652
+        }
+      } ]
+    },
+    "tags" : [ "nat", "@pytest.mark.usefixtures('setup_profiles')", "InteropsuiteA", "android", "interop", "wpa", "interop_and", "sanity", "interop_uc_sanity", "fiveg", "client_connect" ]
+  },
+  "source" : "fded1902613a7ecd.json",
+  "parameterValues" : [ "{'mode': 'NAT', 'ssid_modes': {'wpa': [{'ssid_name': 'ssid_wpa_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk'}, {'ssid_name': 'ssid_wpa_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk'}], 'open': [{'ssid_name': 'ssid_open_2g', 'appliedRadios': ['2G'], 'security': 'none'}, {'ssid_name': 'ssid_open_5g', 'appliedRadios': ['5G'], 'security': 'none'}], 'wpa2_personal': [{'ssid_name': 'ssid_wpa2_2g', 'appliedRadios': ['2G'], 'security_key': 'something', 'security': 'psk2'}, {'ssid_name': 'ssid_wpa2_5g', 'appliedRadios': ['5G'], 'security_key': 'something', 'security': 'psk2'}]}, 'rf': {}, 'radius': False}" ]
+}
