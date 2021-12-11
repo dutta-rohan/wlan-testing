@@ -761,6 +761,27 @@ class RunTest:
         val = self.obj.show()
         return val
 
+    def admin_up_down(self, sta_list=[], option="up"):
+        realm_obj = self.staConnect.localrealm
+        if option == "up":
+            for i in sta_list:
+                realm_obj.admin_up(i)
+        elif option == "down":
+            for j in sta_list:
+                realm_obj.admin_down(j)
+
+    def gen_test(self, station_names,dest_ip):
+        print(station_names)
+        self.staConnect = StaConnect2(self.lanforge_ip, self.lanforge_port, debug_=self.debug)
+        realm_obj = self.staConnect.localrealm
+        ping_obj = realm_obj.new_generic_cx_profile(ver=1)
+        ping_obj.type = "lfping"
+        ping_obj.dest = dest_ip
+        ping_obj.create(station_names)
+        created_endp=ping_obj.created_endp
+        ping_obj.start_cx()
+        print("generic started")
+        return created_endp
 
 if __name__ == '__main__':
     influx_host = "influx.cicd.lab.wlan.tip.build"
