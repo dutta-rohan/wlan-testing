@@ -57,29 +57,34 @@ class TestIsolateClientsSSID(object):
         upstream_port = lf_tools.upstream_port
         print(upstream_port)
         port_resources = upstream_port.split(".")
+        station_list = []
+        # if ssid not in get_vif_state:
+        #     allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
+        #     pytest.xfail("SSID's NOT AVAILABLE IN VIF STATE")
 
-        if ssid not in get_vif_state:
-            allure.attach(name="retest,vif state ssid not available:", body=str(get_vif_state))
-            pytest.xfail("SSID's NOT AVAILABLE IN VIF STATE")
+        for i in range(0, 2):
+            station_list.append(port_resources[0] + "." + port_resources[1] + "." + lf_tools.twog_prefix + str(i))
+        print(station_list)
+        lf_test.Client_Connect(ssid=ssid, passkey=security_key, security=security, mode=mode, band=band,
+                               vlan_id=1, station_name=station_list)
 
-        station = lf_test.Client_Connect(ssid=ssid, security=security,
-                                         passkey=security_key, mode=mode, band=band,
-                                         station_name=station_names_twog, vlan_id=vlan)
-        if station:
-            station_ip = lf_tools.json_get("/port/" + port_resources[0] + "/" + port_resources[1] + "/" +
-                                           station_names_twog[1])["interface"]["ip"]
-            lf_test.gen_test(station_names_twog[0], station_ip)
+        station_ip = lf_tools.json_get("/port/" + port_resources[0] + "/" + port_resources[1] + "/" +
+                                       station_list[1].split('.')[-1])["interface"]["ip"]
+        print("station ip...", station_ip)
+        created_endp = lf_test.gen_test([station_list[0]], station_ip)
+        print("created endp...", created_endp)
 
-            gen_results = lf_tools.json_get(_req_url="generic/list?fields=name,last+results")
-            if gen_results['endpoints'] is not None:
-                for name in gen_results['endpoints']:
-                    for k, v in name.items():
-                        if v['name'] in self.created_endp and not v['name'].endswith('1'):
-                            if v['last results'] != "" and "Unreachable" not in v['last results']:
-                                assert True
-                                print(v['name'])
-                            else:
-                                print(v['name'])
-                                assert False
-
-        assert True
+        gen_results = lf_tools.json_get(_req_url="generic/list?fields=name,last+results")
+        print("gen results...", gen_results)
+        if gen_results['endpoints'] is not None:
+            for name in gen_results['endpoints']:
+                for k, v in name.items():
+                    if v['name'] in created_endp and not v['name'].endswith('1'):
+                        if v['last results'] != "" and "Unreachable" not in v['last results']:
+                            print(v['name'])
+                            allure.attach(v['name'])
+                            assert False
+                        else:
+                            assert True
+                            print(v['name'])
+                            allure.attach(v['name'])
