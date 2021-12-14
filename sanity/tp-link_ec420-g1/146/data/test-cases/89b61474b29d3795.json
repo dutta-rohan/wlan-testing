@@ -1,0 +1,363 @@
+{
+  "uid" : "89b61474b29d3795",
+  "name" : "test_fms_version_list",
+  "fullName" : "test_connectivity.TestFMS#test_fms_version_list",
+  "historyId" : "625b39bf0168621f7240138f6e718dbc",
+  "time" : {
+    "start" : 1639489920226,
+    "stop" : 1639489920501,
+    "duration" : 275
+  },
+  "status" : "failed",
+  "statusMessage" : "AssertionError: assert False not in [False]",
+  "statusTrace" : "self = <tests.test_connectivity.TestFMS object at 0x7f58f5758610>\nfixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7f58f56ebbe0>\nget_configuration = {'access_point': [{'Backup Location': '', 'Backup Password': '', 'Backup Type': 'File System', 'Backup User': '', ...}...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan1', ...}, 'name': 'lanforge'}}\nget_ap_logs = None\n\n    @pytest.mark.get_firmware_list\n    def test_fms_version_list(self, fixtures_ver, get_configuration, get_ap_logs):\n        PASS = []\n        for ap in get_configuration['access_point']:\n            # get the latest branch\n            firmware_list = fixtures_ver.fw_client.get_firmwares(model=ap['model'],\n                                                                 branch=\"\",\n                                                                 commit_id='',\n                                                                 limit='10000',\n                                                                 offset='3000')\n            firmware_list.reverse()\n            release_list_data = []\n            for i in firmware_list:\n                release_list_data.append(str(i['release']))\n            allure.attach(name=\"firmware_list\", body=str(\"\\n\".join(release_list_data)),\n                          attachment_type=allure.attachment_type.JSON)\n            try:\n                response = requests.get(ap['version'])\n                print(\"URL is valid and exists on the internet\")\n                allure.attach(name=\"firmware url: \", body=str(ap['version']))\n                target_revision_commit = ap['version'].split(\"-\")[-2]\n                target_revision_branch = ap['version'].split(\"-\")[-3]\n                flag = True\n                for i in release_list_data:\n                    if target_revision_commit == i.split('-')[-1] and target_revision_branch == i.split('-')[-2]:\n                        print('target firmware : ' + ap['version'] + \" is available in FMS : \" + i)\n                        allure.attach(name='target firmware : ' + ap['version'] + \" is available in FMS : \" + i,\n                                      body=\"\")\n                        PASS.append(True)\n                        flag = False\n    \n                if flag:\n                    print('target firmware : ' + ap['version'] + \" is not available in FMS : \")\n                    allure.attach(name='target firmware : ' + ap['version'] + \" is not available in FMS : \",\n                                  body=\"\")\n                    PASS.append(False)\n                break\n            except Exception as e:\n                pass\n    \n            if ap['version'].split('-')[1] == \"latest\":\n    \n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        version = firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1]\n                        if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1].__contains__('v2.'):\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                            break\n    \n                    if firmware['release'].split(\"-\")[-2] == ap['version'].split('-')[0]:\n                        print(\"Target Firmware: \\n\", firmware)\n                        allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                        break\n            else:\n                flag = True\n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        branch = firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1]\n                        commit = ap['version'].split('-')[1]\n                        if branch.__contains__('v2.') and commit == firmware['release'].split('-')[-1]:\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                            PASS.append(True)\n                            flag = False\n                            break\n                    if ap['version'].split('-')[1] == firmware['release'].split('-')[-1] and ap['version'].split('-')[\n                        0] == \\\n                            firmware['release'].split('-')[-2]:\n                        print('target firmware : ' + ap['version'] + \" is available in FMS : \" + firmware['release'])\n                        allure.attach(\n                            name='target firmware : ' + ap['version'] + \" is available in FMS : \" + firmware['release']\n                            , body=\"\")\n                        PASS.append(True)\n                        flag = False\n    \n                if flag:\n                    print('target firmware : ' + ap['version'] + \" is not available in FMS : \")\n                    allure.attach(name='target firmware : ' + ap['version'] + \" is not available in FMS : \",\n                                  body=\"\")\n                    PASS.append(False)\n>       assert False not in PASS\nE       assert False not in [False]\n\ntest_connectivity.py:254: AssertionError",
+  "flaky" : false,
+  "newFailed" : true,
+  "beforeStages" : [ {
+    "name" : "get_apnos",
+    "time" : {
+      "start" : 1639489872494,
+      "stop" : 1639489872494,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed",
+    "time" : {
+      "start" : 1639489872413,
+      "stop" : 1639489872414,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property",
+    "time" : {
+      "start" : 1639489872413,
+      "stop" : 1639489872413,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs",
+    "time" : {
+      "start" : 1639489917250,
+      "stop" : 1639489920225,
+      "duration" : 2975
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_configuration",
+    "time" : {
+      "start" : 1639489872414,
+      "stop" : 1639489872414,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver",
+    "time" : {
+      "start" : 1639489872414,
+      "stop" : 1639489872459,
+      "duration" : 45
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "testStage" : {
+    "status" : "failed",
+    "statusMessage" : "AssertionError: assert False not in [False]",
+    "statusTrace" : "self = <tests.test_connectivity.TestFMS object at 0x7f58f5758610>\nfixtures_ver = <fixtures_2x.Fixtures_2x object at 0x7f58f56ebbe0>\nget_configuration = {'access_point': [{'Backup Location': '', 'Backup Password': '', 'Backup Type': 'File System', 'Backup User': '', ...}...hy4'], '2.4G-Station-Name': 'wlan0', '5G-Radio': ['1.1.wiphy5'], '5G-Station-Name': 'wlan1', ...}, 'name': 'lanforge'}}\nget_ap_logs = None\n\n    @pytest.mark.get_firmware_list\n    def test_fms_version_list(self, fixtures_ver, get_configuration, get_ap_logs):\n        PASS = []\n        for ap in get_configuration['access_point']:\n            # get the latest branch\n            firmware_list = fixtures_ver.fw_client.get_firmwares(model=ap['model'],\n                                                                 branch=\"\",\n                                                                 commit_id='',\n                                                                 limit='10000',\n                                                                 offset='3000')\n            firmware_list.reverse()\n            release_list_data = []\n            for i in firmware_list:\n                release_list_data.append(str(i['release']))\n            allure.attach(name=\"firmware_list\", body=str(\"\\n\".join(release_list_data)),\n                          attachment_type=allure.attachment_type.JSON)\n            try:\n                response = requests.get(ap['version'])\n                print(\"URL is valid and exists on the internet\")\n                allure.attach(name=\"firmware url: \", body=str(ap['version']))\n                target_revision_commit = ap['version'].split(\"-\")[-2]\n                target_revision_branch = ap['version'].split(\"-\")[-3]\n                flag = True\n                for i in release_list_data:\n                    if target_revision_commit == i.split('-')[-1] and target_revision_branch == i.split('-')[-2]:\n                        print('target firmware : ' + ap['version'] + \" is available in FMS : \" + i)\n                        allure.attach(name='target firmware : ' + ap['version'] + \" is available in FMS : \" + i,\n                                      body=\"\")\n                        PASS.append(True)\n                        flag = False\n    \n                if flag:\n                    print('target firmware : ' + ap['version'] + \" is not available in FMS : \")\n                    allure.attach(name='target firmware : ' + ap['version'] + \" is not available in FMS : \",\n                                  body=\"\")\n                    PASS.append(False)\n                break\n            except Exception as e:\n                pass\n    \n            if ap['version'].split('-')[1] == \"latest\":\n    \n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        version = firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1]\n                        if firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1].__contains__('v2.'):\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                            break\n    \n                    if firmware['release'].split(\"-\")[-2] == ap['version'].split('-')[0]:\n                        print(\"Target Firmware: \\n\", firmware)\n                        allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                        break\n            else:\n                flag = True\n                for firmware in firmware_list:\n                    if ap['version'].split('-')[0] == 'release':\n                        branch = firmware['revision'].split(\"/\")[1].replace(\" \", \"\").split('-')[1]\n                        commit = ap['version'].split('-')[1]\n                        if branch.__contains__('v2.') and commit == firmware['release'].split('-')[-1]:\n                            print(\"Target Firmware: \\n\", firmware)\n                            allure.attach(name=\"Target firmware : \", body=str(firmware['release']))\n                            PASS.append(True)\n                            flag = False\n                            break\n                    if ap['version'].split('-')[1] == firmware['release'].split('-')[-1] and ap['version'].split('-')[\n                        0] == \\\n                            firmware['release'].split('-')[-2]:\n                        print('target firmware : ' + ap['version'] + \" is available in FMS : \" + firmware['release'])\n                        allure.attach(\n                            name='target firmware : ' + ap['version'] + \" is available in FMS : \" + firmware['release']\n                            , body=\"\")\n                        PASS.append(True)\n                        flag = False\n    \n                if flag:\n                    print('target firmware : ' + ap['version'] + \" is not available in FMS : \")\n                    allure.attach(name='target firmware : ' + ap['version'] + \" is not available in FMS : \",\n                                  body=\"\")\n                    PASS.append(False)\n>       assert False not in PASS\nE       assert False not in [False]\n\ntest_connectivity.py:254: AssertionError",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "c8e9509c2842ec19",
+      "name" : "firmwares/limit=10000&deviceType=tp-link_ec420-g1&latestonly=offset=3000",
+      "source" : "c8e9509c2842ec19.json",
+      "type" : "application/json",
+      "size" : 41199
+    }, {
+      "uid" : "52acca8885868024",
+      "name" : "firmware_list",
+      "source" : "52acca8885868024.json",
+      "type" : "application/json",
+      "size" : 2771
+    }, {
+      "uid" : "4c0b2c17b3a0f8b5",
+      "name" : "target firmware : release-v2.4.0-rc2 is not available in FMS : ",
+      "source" : "4c0b2c17b3a0f8b5.attach",
+      "type" : "application/octet-stream",
+      "size" : 0
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 3,
+    "shouldDisplayMessage" : true,
+    "hasContent" : true
+  },
+  "afterStages" : [ {
+    "name" : "get_apnos::0",
+    "time" : {
+      "start" : 1639496418520,
+      "stop" : 1639496418521,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "testbed::0",
+    "time" : {
+      "start" : 1639496418921,
+      "stop" : 1639496418921,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "add_allure_environment_property::0",
+    "time" : {
+      "start" : 1639496418925,
+      "stop" : 1639496418932,
+      "duration" : 7
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "get_ap_logs::collect_logs",
+    "time" : {
+      "start" : 1639489921236,
+      "stop" : 1639489931922,
+      "duration" : 10686
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ {
+      "uid" : "9b7ca16a17c11db9",
+      "name" : "logread",
+      "source" : "9b7ca16a17c11db9.attach",
+      "type" : "text/plain",
+      "size" : 136
+    } ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 1,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true
+  }, {
+    "name" : "get_configuration::0",
+    "time" : {
+      "start" : 1639496418827,
+      "stop" : 1639496418827,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  }, {
+    "name" : "fixtures_ver::0",
+    "time" : {
+      "start" : 1639496418615,
+      "stop" : 1639496418616,
+      "duration" : 1
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false,
+    "hasContent" : false
+  } ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "test_resources"
+  }, {
+    "name" : "tag",
+    "value" : "sanity_55"
+  }, {
+    "name" : "tag",
+    "value" : "uc_sanity"
+  }, {
+    "name" : "tag",
+    "value" : "get_firmware_list"
+  }, {
+    "name" : "tag",
+    "value" : "uc_firmware"
+  }, {
+    "name" : "tag",
+    "value" : "sanity"
+  }, {
+    "name" : "suite",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestFMS"
+  }, {
+    "name" : "host",
+    "value" : "testing-146-6gsm7"
+  }, {
+    "name" : "thread",
+    "value" : "14-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_connectivity"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "Firmware Management",
+    "type" : "test_case"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 1,
+        "broken" : 0,
+        "skipped" : 0,
+        "passed" : 7,
+        "unknown" : 0,
+        "total" : 8
+      },
+      "items" : [ {
+        "uid" : "610259b0ebb3db10",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639460957096,
+          "stop" : 1639460957300,
+          "duration" : 204
+        }
+      }, {
+        "uid" : "6760c6e56727199f",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639412514430,
+          "stop" : 1639412514587,
+          "duration" : 157
+        }
+      }, {
+        "uid" : "7f1c70a63dcd843c",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639343567056,
+          "stop" : 1639343567370,
+          "duration" : 314
+        }
+      }, {
+        "uid" : "76f02fce76c79b",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639256492788,
+          "stop" : 1639256492991,
+          "duration" : 203
+        }
+      }, {
+        "uid" : "ee5f0eaf6787ab92",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639138260302,
+          "stop" : 1639138260791,
+          "duration" : 489
+        }
+      }, {
+        "uid" : "314ac9bf045fa1f2",
+        "status" : "passed",
+        "time" : {
+          "start" : 1639083959347,
+          "stop" : 1639083959477,
+          "duration" : 130
+        }
+      }, {
+        "uid" : "65a49f3ffcd45eb8",
+        "status" : "passed",
+        "time" : {
+          "start" : 1638804458968,
+          "stop" : 1638804459173,
+          "duration" : 205
+        }
+      } ]
+    },
+    "tags" : [ "get_firmware_list", "test_resources", "sanity_55", "sanity", "uc_firmware", "uc_sanity" ]
+  },
+  "source" : "89b61474b29d3795.json",
+  "parameterValues" : [ ]
+}
